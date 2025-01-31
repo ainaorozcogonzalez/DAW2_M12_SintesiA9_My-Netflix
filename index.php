@@ -1,4 +1,5 @@
 <?php
+session_start(); // Iniciar la sesión
 require 'conexion.php'; // Incluir la conexión a la base de datos
 
 // Obtener los 5 contenidos más populares
@@ -31,8 +32,13 @@ $all_contenidos = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <input type="text" placeholder="Buscar películas o series..." aria-label="Buscar">
             </div>
             <nav>
-                <a href="login.php">Iniciar Sesión</a>
-                <a href="register.php">Registrarse</a>
+                <?php if (isset($_SESSION['user_id'])): ?>
+                    <span>Usuario</span> <!-- Mostrar nombre de usuario o "Usuario" -->
+                    <a href="logout.php">Logout</a> <!-- Botón de logout -->
+                <?php else: ?>
+                    <a href="login.php">Iniciar Sesión</a>
+                    <a href="register.php">Registrarse</a>
+                <?php endif; ?>
             </nav>
         </div>
     </header>
