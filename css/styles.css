@@ -1,0 +1,92 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #141414;
+    color: white;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background-color: #e50914;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+}
+
+.logo h1 {
+    margin: 0;
+    font-size: 24px;
+}
+
+.search-container {
+    flex-grow: 1;
+    margin: 0 20px;
+}
+
+.search-container input {
+    width: 100%;
+    padding: 8px;
+    border: none;
+    border-radius: 5px;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    margin-left: 20px;
+}
+
+h2 {
+    margin: 20px 0;
+}
+
+.top5-container {
+    display: flex; /* Cambiar a flex para que se muestre en una fila */
+    overflow-x: auto; /* Permitir desplazamiento horizontal si es necesario */
+    padding: 0 20px;
+}
+
+.contenido {
+    min-width: 200px; /* Ancho mínimo para cada contenido */
+    margin-right: 10px; /* Espaciado entre los contenidos */
+    position: relative;
+    overflow: hidden;
+    border-radius: 5px;
+}
+
+.contenido img {
+    width: 100%;
+    border-radius: 5px;
+    transition: transform 0.2s;
+}
+
+.contenido img:hover {
+    transform: scale(1.05);
+}
+
+.contenido h3 {
+    margin: 5px 0;
+    font-size: 16px;
+}
+
+.contenido p {
+    font-size: 14px;
+    color: #ccc;
+}
+
+.peliculas-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 10px;
+    padding: 0 20px;
+}
+
+footer {
+    text-align: center;
+    padding: 20px;
+    background-color: #000;
+}
