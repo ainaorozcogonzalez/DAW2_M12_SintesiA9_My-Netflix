@@ -21,6 +21,7 @@ $all_contenidos = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <title>MyNetflix</title>
     <link rel="stylesheet" href="./css/styles.css"> <!-- Enlace a tu archivo CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"> <!-- Iconos -->
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
 </head>
 <body>
     <header>
