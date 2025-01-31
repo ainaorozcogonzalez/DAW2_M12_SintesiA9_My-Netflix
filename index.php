@@ -18,7 +18,7 @@ $all_contenidos = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MyNetflix</title>
-    <link rel="stylesheet" href="styles.css"> <!-- Enlace a tu archivo CSS -->
+    <link rel="stylesheet" href="./css/styles.css"> <!-- Enlace a tu archivo CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"> <!-- Iconos -->
 </head>
 <body>
@@ -54,8 +54,13 @@ $all_contenidos = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <section id="contenidos">
             <h2>Contenidos Disponibles</h2>
             <div class="contenidos-container">
-                <!-- Aquí se mostrarán todas las películas y series disponibles -->
-                {{ all_contenidos }}
+                <?php foreach ($all_contenidos as $contenido): ?>
+                    <div class="contenido">
+                        <img src="<?php echo $contenido['imagen']; ?>" alt="<?php echo $contenido['titulo']; ?>">
+                        <h3><?php echo $contenido['titulo']; ?></h3>
+                        <p><?php echo $contenido['descripcion']; ?></p>
+                    </div>
+                <?php endforeach; ?>
             </div>
         </section>
     </main>
