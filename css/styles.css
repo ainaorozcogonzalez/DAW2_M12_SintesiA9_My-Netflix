@@ -1,92 +1,118 @@
 body {
-    font-family: Arial, sans-serif;
-    background-color: #141414;
+    font-family: 'Bebas Neue', sans-serif; /* Cambiar la fuente a Bebas Neue */
+    background-color: #191919; /* Fondo de la página */
     color: white;
     margin: 0;
     padding: 0;
 }
 
 header {
-    background-color: #e50914;
+    background-color: #000; /* Encabezado negro */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5); /* Sombra para el encabezado */
 }
 
 .navbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px 20px;
+    padding: 15px 40px; /* Aumentar el padding para más espacio en la barra de navegación */
 }
 
 .logo h1 {
     margin: 0;
-    font-size: 24px;
+    font-size: 28px;
+    font-weight: bold;
+    margin-left: 20px; /* Margen izquierdo para el logo */
 }
 
 .search-container {
     flex-grow: 1;
     margin: 0 20px;
+    max-width: 300px; /* Establecer un ancho máximo para el contenedor de búsqueda */
 }
 
 .search-container input {
-    width: 100%;
-    padding: 8px;
+    width: 100%; /* Mantener el 100% del contenedor */
+    padding: 10px;
     border: none;
     border-radius: 5px;
+    background-color: #333; /* Fondo del input */
+    color: white;
+}
+
+.search-container input::placeholder {
+    color: #aaa; /* Color del placeholder */
 }
 
 nav a {
-    color: white;
+    color: #eb3e46; /* Color rojo para los enlaces */
     text-decoration: none;
     margin-left: 20px;
+    padding: 10px 15px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+nav a:hover {
+    background-color: #e50914; /* Color de fondo al pasar el mouse */
 }
 
 h2 {
-    margin: 20px 0;
+    margin: 20px 0 20px 60px; /* Margen superior, margen inferior y margen izquierdo aumentado a 40px */
+    font-size: 24px;
+    text-align: left; /* Alinear a la izquierda */
 }
 
 .top5-container {
     display: flex; /* Cambiar a flex para que se muestre en una fila */
     overflow-x: auto; /* Permitir desplazamiento horizontal si es necesario */
-    padding: 0 20px;
+    padding: 20px;
+    gap: 15px; /* Espaciado entre los contenidos */
 }
 
 .contenido {
     min-width: 200px; /* Ancho mínimo para cada contenido */
-    margin-right: 10px; /* Espaciado entre los contenidos */
     position: relative;
     overflow: hidden;
     border-radius: 5px;
+    transition: transform 0.3s; /* Transición suave al pasar el mouse */
+}
+
+.contenido:hover {
+    transform: scale(1.05); /* Efecto de zoom al pasar el mouse */
 }
 
 .contenido img {
     width: 100%;
     border-radius: 5px;
-    transition: transform 0.2s;
-}
-
-.contenido img:hover {
-    transform: scale(1.05);
 }
 
 .contenido h3 {
-    margin: 5px 0;
-    font-size: 16px;
+    margin: 10px 0 5px;
+    font-size: 18px;
+    text-align: center; /* Centrar el título */
 }
 
 .contenido p {
     font-size: 14px;
     color: #ccc;
+    text-align: center; /* Centrar la descripción */
 }
 
-.peliculas-container {
+.contenidos-container {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    gap: 10px;
-    padding: 0 20px;
+    gap: 15px; /* Espaciado entre los contenidos */
+    padding: 20px;
+    background-color: #000; /* Fondo negro para el contenedor de películas y series */
+    border-radius: 5px; /* Bordes redondeados */
 }
 
 footer {
     text-align: center;
     padding: 20px;
-    background-color: #000;
+    background-color: #000; /* Fondo negro para el pie de página */
+    position: relative;
+    bottom: 0;
+    width: 100%;
 }
