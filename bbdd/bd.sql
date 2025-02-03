@@ -31,6 +31,7 @@ CREATE TABLE contenidos (
     likes INT DEFAULT 0,
     tipo ENUM('pelicula', 'serie') NOT NULL, -- Campo para distinguir entre películas y series
     imagen VARCHAR(255) NOT NULL, -- Nuevo campo para la URL de la imagen
+    video_url VARCHAR(255),
     activo BOOLEAN DEFAULT TRUE,
     fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );

@@ -15,7 +15,12 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 15px 40px; /* Aumentar el padding para más espacio en la barra de navegación */
+    padding: 15px 40px;
+    position: relative; /* Añadido para posicionamiento del buscador */
+}
+
+.logo {
+    z-index: 1; /* Asegurar que esté por encima del buscador */
 }
 
 .logo h1 {
@@ -26,22 +31,36 @@ header {
 }
 
 .search-container {
-    flex-grow: 1;
-    margin: 0 20px;
-    max-width: 300px; /* Establecer un ancho máximo para el contenedor de búsqueda */
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 500px; /* Aumentado de 300px a 500px */
+    margin: 0;
 }
 
 .search-container input {
-    width: 100%; /* Mantener el 100% del contenedor */
-    padding: 10px;
+    width: 100%;
+    padding: 12px 20px; /* Aumentado el padding lateral para dar más espacio */
     border: none;
     border-radius: 5px;
-    background-color: #333; /* Fondo del input */
-    color: white;
+    background-color: #ffffff;
+    color: #000;
+    text-align: left; /* Cambiado de center a left */
+    font-size: 16px;
 }
 
 .search-container input::placeholder {
-    color: #aaa; /* Color del placeholder */
+    color: #666;
+    text-align: left; /* Asegurar que el placeholder también esté alineado a la izquierda */
+}
+
+.search-container input:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px #e50914; /* Borde rojo al enfocar */
+}
+
+nav {
+    z-index: 1; /* Asegurar que esté por encima del buscador */
 }
 
 nav a {
@@ -64,27 +83,31 @@ h2 {
 }
 
 .top5-container {
-    display: flex; /* Cambiar a flex para que se muestre en una fila */
-    overflow-x: auto; /* Permitir desplazamiento horizontal si es necesario */
+    display: flex;
+    overflow-x: auto;
     padding: 20px;
-    gap: 15px; /* Espaciado entre los contenidos */
+    gap: 20px;
 }
 
 .contenido {
-    min-width: 200px; /* Ancho mínimo para cada contenido */
+    width: 200px; /* Ancho fijo del contenedor */
     position: relative;
     overflow: hidden;
     border-radius: 5px;
-    transition: transform 0.3s; /* Transición suave al pasar el mouse */
-}
-
-.contenido:hover {
-    transform: scale(1.05); /* Efecto de zoom al pasar el mouse */
+    transition: transform 0.3s;
+    margin: 0 auto; /* Centrar el contenido */
 }
 
 .contenido img {
-    width: 100%;
+    width: 200px;
+    height: 300px;
+    object-fit: cover;
     border-radius: 5px;
+    display: block; /* Eliminar espacio extra debajo de la imagen */
+}
+
+.contenido:hover {
+    transform: scale(1.05);
 }
 
 .contenido h3 {
@@ -101,11 +124,11 @@ h2 {
 
 .contenidos-container {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    gap: 15px; /* Espaciado entre los contenidos */
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Cambiado a 200px para coincidir con el ancho de imagen */
+    gap: 20px;
     padding: 20px;
-    background-color: #000; /* Fondo negro para el contenedor de películas y series */
-    border-radius: 5px; /* Bordes redondeados */
+    background-color: #000;
+    border-radius: 5px;
 }
 
 footer {
@@ -115,4 +138,547 @@ footer {
     position: relative;
     bottom: 0;
     width: 100%;
+}
+
+.user-icon {
+    color: #fff;
+    font-size: 1.2rem;
+    text-decoration: none;
+    padding: 5px;
+}
+
+.user-icon:hover {
+    color: #e50914;
+    transition: color 0.3s ease;
+}
+
+.logout-icon {
+    color: #fff;
+    font-size: 1.2rem;
+    text-decoration: none;
+    padding: 5px;
+}
+
+.logout-icon:hover {
+    color: #e50914;
+    transition: color 0.3s ease;
+}
+
+.imagen-container {
+    position: relative;
+    overflow: hidden;
+    width: 200px;
+    height: 300px;
+    border-radius: 5px;
+}
+
+.imagen-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.overlay i {
+    color: white;
+    font-size: 2rem;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.overlay i:hover {
+    color: #e50914;
+}
+
+.imagen-container:hover img {
+    transform: scale(1.1);
+}
+
+.imagen-container:hover .overlay {
+    opacity: 1;
+}
+
+.ranking-number {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background-color: #e50914;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    z-index: 2;
+}
+
+.top5-title {
+    margin: 10px 0 5px;
+    font-size: 2.5rem;
+    text-align: center;
+    color: #ffffff;
+    font-weight: bold;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+}
+
+.play-button {
+    text-decoration: none;
+}
+
+.video-container {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 20px;
+}
+
+.video-container video {
+    width: 100%;
+    max-height: 80vh;
+    background: #000;
+    border-radius: 10px;
+}
+
+.volver-btn {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #e50914;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.volver-btn:hover {
+    background-color: #ff0f1f;
+}
+
+.reproductor-page {
+    background-color: #141414;
+    min-height: 100vh;
+}
+
+.nav-reproductor {
+    background-color: rgba(0, 0, 0, 0.9);
+    padding: 1rem 2rem;
+    display: flex;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+}
+
+.back-button {
+    color: #fff;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1.1rem;
+    transition: color 0.3s ease;
+}
+
+.back-button:hover {
+    color: #e50914;
+}
+
+.nav-title {
+    margin-left: 2rem;
+    font-size: 1.2rem;
+    color: #fff;
+    font-weight: bold;
+}
+
+.video-container {
+    max-width: 1400px;
+    margin: 80px auto 0;
+    padding: 20px;
+}
+
+.video-container video {
+    width: 100%;
+    max-height: 80vh;
+    background: #000;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.content-info {
+    background: rgba(0, 0, 0, 0.5);
+    padding: 2rem;
+    margin-top: 2rem;
+    border-radius: 8px;
+}
+
+.content-info h1 {
+    font-size: 2.5rem;
+    margin: 0 0 1rem 0;
+    color: #fff;
+}
+
+.metadata {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.tipo-badge {
+    background-color: #e50914;
+    color: white;
+    padding: 0.3rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+}
+
+.fecha {
+    color: #aaa;
+}
+
+.likes {
+    color: #e50914;
+}
+
+.likes i {
+    margin-right: 0.3rem;
+}
+
+.descripcion {
+    color: #fff;
+    line-height: 1.6;
+    font-size: 1.1rem;
+    margin-top: 1rem;
+}
+
+.like-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+}
+
+.like-button i {
+    color: white;
+    font-size: 2rem;
+    transition: color 0.3s ease;
+}
+
+.like-button:hover i {
+    color: #e50914;
+}
+
+.like-button.liked i {
+    color: #e50914;
+}
+
+.like-button.disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+.login-page {
+    background-color: #141414;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-container {
+    background: rgba(0, 0, 0, 0.75);
+    padding: 60px 68px 40px;
+    border-radius: 4px;
+    width: 100%;
+    max-width: 450px;
+}
+
+.login-container h1 {
+    color: #fff;
+    font-size: 32px;
+    margin-bottom: 28px;
+}
+
+.form-group {
+    margin-bottom: 16px;
+}
+
+.form-group label {
+    display: block;
+    color: #fff;
+    margin-bottom: 8px;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 16px 20px;
+    border-radius: 4px;
+    border: none;
+    background-color: #333;
+    color: #fff;
+    font-size: 16px;
+}
+
+.login-container button {
+    width: 100%;
+    padding: 16px;
+    border-radius: 4px;
+    border: none;
+    background-color: #e50914;
+    color: #fff;
+    font-size: 16px;
+    font-weight: bold;
+    margin-top: 24px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.login-container button:hover {
+    background-color: #ff0f1f;
+}
+
+.error-message {
+    background-color: #e87c03;
+    color: white;
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 16px;
+}
+
+.login-container p {
+    color: #737373;
+    margin-top: 16px;
+    text-align: center;
+}
+
+.login-container a {
+    color: #fff;
+    text-decoration: none;
+}
+
+.login-container a:hover {
+    text-decoration: underline;
+}
+
+.detalles-page {
+    background-color: #141414;
+    min-height: 100vh;
+}
+
+.detalles-container {
+    max-width: 1200px;
+    margin: 80px auto 0;
+    padding: 20px;
+}
+
+.detalles-content {
+    display: flex;
+    gap: 40px;
+    background: rgba(0, 0, 0, 0.7);
+    padding: 30px;
+    border-radius: 10px;
+}
+
+.detalles-imagen {
+    flex: 0 0 300px;
+    position: relative;
+}
+
+.detalles-imagen img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.detalles-info {
+    flex: 1;
+}
+
+.detalles-info h1 {
+    font-size: 3rem;
+    margin: 0 0 20px 0;
+    color: #fff;
+}
+
+.play-button-large {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background-color: #e50914;
+    color: white;
+    text-decoration: none;
+    padding: 15px 30px;
+    border-radius: 5px;
+    margin-top: 20px;
+    font-size: 1.2rem;
+    transition: background-color 0.3s;
+}
+
+.play-button-large:hover {
+    background-color: #ff0f1f;
+}
+
+.imagen-link {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+}
+
+.imagen-link:hover + .overlay {
+    opacity: 1;
+}
+
+.password-requirements {
+    display: block;
+    color: #aaa;
+    font-size: 0.8rem;
+    margin-top: 5px;
+}
+
+.success-message {
+    background-color: #28a745;
+    color: white;
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 16px;
+}
+
+.error-item {
+    color: #fff;
+    background-color: #e87c03;
+    padding: 8px;
+    margin-bottom: 8px;
+    border-radius: 4px;
+}
+
+.error-container {
+    margin-bottom: 16px;
+}
+
+.perfil-page {
+    background-color: #141414;
+    min-height: 100vh;
+    padding-top: 60px;
+}
+
+.perfil-container {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 20px;
+}
+
+.perfil-content {
+    background: rgba(0, 0, 0, 0.7);
+    border-radius: 10px;
+    padding: 30px;
+}
+
+.perfil-info {
+    margin-bottom: 40px;
+}
+
+.perfil-info h1 {
+    color: #fff;
+    margin-bottom: 30px;
+}
+
+.perfil-form {
+    max-width: 600px;
+}
+
+.perfil-stats {
+    margin-bottom: 40px;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 8px;
+}
+
+.perfil-stats h2 {
+    color: #fff;
+    margin: 0 0 15px 0;
+    font-size: 1.5rem;
+}
+
+.perfil-stats p {
+    color: #aaa;
+    margin: 5px 0;
+}
+
+.contenidos-liked h2 {
+    color: #fff;
+    margin: 0 0 20px 0;
+    font-size: 1.5rem;
+}
+
+.liked-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.contenido-card {
+    position: relative;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: transform 0.3s;
+}
+
+.contenido-card:hover {
+    transform: scale(1.05);
+}
+
+.contenido-card img {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+}
+
+.contenido-info {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 15px;
+    background: linear-gradient(transparent, rgba(0,0,0,0.9));
+}
+
+.contenido-info h3 {
+    color: #fff;
+    margin: 0 0 10px 0;
+    font-size: 1.1rem;
+}
+
+.contenido-info .play-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: #e50914;
+    color: white;
+    text-decoration: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    transition: background-color 0.3s;
+}
+
+.contenido-info .play-button:hover {
+    background: #ff0f1f;
 }

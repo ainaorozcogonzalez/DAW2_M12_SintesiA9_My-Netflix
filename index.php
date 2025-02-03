@@ -22,6 +22,7 @@ $all_contenidos = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <link rel="stylesheet" href="./css/styles.css"> <!-- Enlace a tu archivo CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"> <!-- Iconos -->
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+    <script src="./js/likes.js" defer></script>
 </head>
 <body>
     <header>
@@ -34,8 +35,8 @@ $all_contenidos = $stmt->fetchAll(PDO::FETCH_ASSOC);
             </div>
             <nav>
                 <?php if (isset($_SESSION['user_id'])): ?>
-                    <span>Usuario</span> <!-- Mostrar nombre de usuario o "Usuario" -->
-                    <a href="logout.php">Logout</a> <!-- Botón de logout -->
+                    <a href="perfil.php" class="user-icon"><i class="fas fa-user"></i></a>
+                    <a href="logout.php" class="logout-icon"><i class="fas fa-sign-out-alt"></i></a>
                 <?php else: ?>
                     <a href="login.php">Iniciar Sesión</a>
                     <a href="register.php">Registrarse</a>
@@ -48,13 +49,40 @@ $all_contenidos = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <section id="top5">
             <h2>Top 5 Contenidos</h2>
             <div class="top5-container">
-                <?php foreach ($top5_contenidos as $contenido): ?>
+                <?php 
+                $ranking = 1;
+                foreach ($top5_contenidos as $contenido): 
+                ?>
                     <div class="contenido">
-                        <img src="<?php echo $contenido['imagen']; ?>" alt="<?php echo $contenido['titulo']; ?>">
-                        <h3><?php echo $contenido['titulo']; ?></h3>
-                        <p><?php echo $contenido['descripcion']; ?></p>
+                        <div class="imagen-container">
+                            <div class="ranking-number">#<?php echo $ranking; ?></div>
+                            <a href="detalles.php?id=<?php echo $contenido['id']; ?>" class="imagen-link">
+                                <img src="./img/<?php echo $contenido['imagen']; ?>" alt="<?php echo $contenido['titulo']; ?>">
+                            </a>
+                            <div class="overlay">
+                                <?php if (isset($_SESSION['user_id'])): ?>
+                                    <a href="reproducir.php?id=<?php echo $contenido['id']; ?>" class="play-button">
+                                        <i class="fas fa-play"></i>
+                                    </a>
+                                    <button class="like-button" data-id="<?php echo $contenido['id']; ?>">
+                                        <i class="fas fa-heart"></i>
+                                    </button>
+                                <?php else: ?>
+                                    <a href="login.php?redirect=reproducir&id=<?php echo $contenido['id']; ?>" class="play-button">
+                                        <i class="fas fa-play"></i>
+                                    </a>
+                                    <a href="login.php" class="like-button">
+                                        <i class="fas fa-heart"></i>
+                                    </a>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                        <h3 class="top5-title"><?php echo $contenido['titulo']; ?></h3>
                     </div>
-                <?php endforeach; ?>
+                <?php 
+                $ranking++;
+                endforeach; 
+                ?>
             </div>
         </section>
 
@@ -63,7 +91,7 @@ $all_contenidos = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <div class="contenidos-container">
                 <?php foreach ($all_contenidos as $contenido): ?>
                     <div class="contenido">
-                        <img src="<?php echo $contenido['imagen']; ?>" alt="<?php echo $contenido['titulo']; ?>">
+                        <img src="./img/<?php echo $contenido['imagen']; ?>" alt="<?php echo $contenido['titulo']; ?>">
                         <h3><?php echo $contenido['titulo']; ?></h3>
                         <p><?php echo $contenido['descripcion']; ?></p>
                     </div>
