@@ -11,6 +11,7 @@ $top5_contenidos = $stmt->fetchAll(PDO::FETCH_ASSOC);
 $stmt = $conn->prepare("SELECT * FROM contenidos WHERE activo = 1");
 $stmt->execute();
 $all_contenidos = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
 ?>
 
 <!DOCTYPE html>
@@ -28,7 +29,7 @@ $all_contenidos = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <header>
         <div class="navbar">
             <div class="logo">
-                <h1>MyNetflix</h1> <!-- Aquí puedes poner una imagen como logo -->
+                <img src="./img/logo.webp" alt="logo">
             </div>
             <div class="search-container">
                 <input type="text" placeholder="Buscar películas o series..." aria-label="Buscar">
@@ -37,6 +38,7 @@ $all_contenidos = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <?php if (isset($_SESSION['user_id'])): ?>
                     <a href="perfil.php" class="user-icon"><i class="fas fa-user"></i></a>
                     <a href="logout.php" class="logout-icon"><i class="fas fa-sign-out-alt"></i></a>
+
                 <?php else: ?>
                     <a href="login.php">Iniciar Sesión</a>
                     <a href="register.php">Registrarse</a>
