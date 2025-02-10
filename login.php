@@ -48,8 +48,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <link rel="stylesheet" href="./css/styles.css">
 </head>
 <body class="login-page">
+    <header>
+        <div class="logo">NETFLIX</div>
+        <nav class="navbar">
+            <a href="login.php">LOGIN</a>
+            <a href="register.php">REGISTER</a>
+        </nav>
+    </header>
     <div class="login-container">
-        <h1>Iniciar Sesión</h1>
+        <h1>LOG IN TO NETFLIX</h1>
 
         <?php if ($error): ?>
             <div class="error-message"><?php echo htmlspecialchars($error); ?></div>
@@ -57,18 +64,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         <form method="POST" action="login.php">
             <div class="form-group">
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email" required>
+                <input type="email" id="email" name="email" placeholder="Email" required>
             </div>
             
             <div class="form-group">
-                <label for="password">Contraseña:</label>
-                <input type="password" id="password" name="password" required>
+                <input type="password" id="password" name="password" placeholder="Password" required>
             </div>
             
-            <button type="submit">Iniciar Sesión</button>
+            <button type="submit">Log in</button>
         </form>
-        <p>¿No tienes cuenta? <a href="register.php">Regístrate</a></p>
+        <p>You don't have account? <a href="register.php">Register</a></p>
     </div>
 </body>
 </html>

@@ -97,8 +97,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <script src="./js/register-validaciones.js" defer></script>
 </head>
 <body class="login-page">
+    <header>
+        <div class="logo">NETFLIX</div>
+        <nav class="navbar">
+            <a href="login.php">LOGIN</a>
+            <a href="register.php">REGISTER</a>
+        </nav>
+    </header>
     <div class="login-container">
-        <h1>Crear Cuenta</h1>
+        <h1>SIGN UP</h1>
         
         <div id="errores" class="error-container" style="display: none;"></div>
         
@@ -112,28 +119,24 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         <form id="registerForm" method="POST" action="register.php">
             <div class="form-group">
-                <label for="nombre">Nombre:</label>
-                <input type="text" id="nombre" name="nombre" required 
+                <input type="text" id="nombre" name="nombre" required placeholder="Name"
                        value="<?php echo isset($_POST['nombre']) ? htmlspecialchars($_POST['nombre']) : ''; ?>">
             </div>
             
             <div class="form-group">
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email" required
+                <input type="email" id="email" name="email" required placeholder="Email"
                        value="<?php echo isset($_POST['email']) ? htmlspecialchars($_POST['email']) : ''; ?>">
             </div>
             
             <div class="form-group">
-                <label for="password">Contraseña:</label>
-                <input type="password" id="password" name="password" required>
+                <input type="password" id="password" name="password" required placeholder="Password">
                 <small class="password-requirements">
                     La contraseña debe tener al menos 6 caracteres, una mayúscula y un número
                 </small>
             </div>
             
             <div class="form-group">
-                <label for="confirm_password">Confirmar Contraseña:</label>
-                <input type="password" id="confirm_password" name="confirm_password" required>
+                <input type="password" id="confirm_password" name="confirm_password" required placeholder="Confirm password">
             </div>
             
             <button type="submit">Registrarse</button>
