@@ -26,7 +26,7 @@ $all_contenidos = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <script src="./js/likes.js" defer></script>
 </head>
 <body>
-    <header>
+    <header class="header1">
         <div class="navbar">
             <div class="logo">
                 <img src="./img/logo.webp" alt="logo">
