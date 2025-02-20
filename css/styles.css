@@ -7,39 +7,8 @@ body {
 }
 
 header {
-    background-color: #000; /* Fondo negro */
-    display: flex;
-    justify-content: center; /* Centrar el contenido del encabezado */
-    align-items: center;
-    padding: 10px 40px; /* Espaciado del encabezado */
-    position: fixed; /* Fijar el encabezado en la parte superior */
-    top: 0; /* Asegurarse de que esté en la parte superior */
-    left: 0; /* Asegurarse de que esté alineado a la izquierda */
-    right: 0; /* Asegurarse de que esté alineado a la derecha */
-    z-index: 1000; /* Asegurarse de que esté por encima de otros elementos */
-}
-
-header .logo {
-    color: #e50914; /* Color rojo para el logo */
-    font-size: 2rem; /* Tamaño de fuente del logo */
-    font-weight: bold;
-    margin-right: auto; /* Asegura que el logo esté a la izquierda */
-}
-
-header .navbar {
-    display: flex;
-    gap: 20px; /* Espaciado entre los enlaces */
-}
-
-header .navbar a {
-    color: #e50914; /* Color rojo para los enlaces */
-    text-decoration: none;
-    font-size: 1.2rem; /* Tamaño de fuente de los enlaces */
-    transition: color 0.3s;
-}
-
-header .navbar a:hover {
-    color: #fff; /* Cambiar a blanco al pasar el mouse */
+    background-color: #000; /* Encabezado negro */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5); /* Sombra para el encabezado */
 }
 
 .navbar {
@@ -426,35 +395,28 @@ footer {
 
 .login-page {
     background-color: #141414;
-    height: 100vh;
+    min-height: 100vh;
     display: flex;
-    flex-direction: column;
     justify-content: center;
     align-items: center;
-    overflow: hidden; /* Evita el scroll */
-    margin-top: 0; /* Eliminamos el margen superior anterior */
 }
 
 .login-container {
-    background: transparent;
-    padding: 60px 40px;
+    background: rgba(0, 0, 0, 0.75);
+    padding: 60px 68px 40px;
     border-radius: 4px;
     width: 100%;
-    max-width: 600px;
-    box-sizing: border-box;
-    margin-top: 80px; /* Cambiado de -80px a 80px para dejar espacio para el header */
+    max-width: 450px;
 }
 
 .login-container h1 {
     color: #fff;
     font-size: 32px;
     margin-bottom: 28px;
-    text-align: center;
 }
 
 .form-group {
     margin-bottom: 16px;
-    width: 100%;
 }
 
 .form-group label {
@@ -464,33 +426,31 @@ footer {
 }
 
 .form-group input {
-    width: 100%; /* Ocupar el 100% del ancho disponible */
+    width: 100%;
     padding: 16px 20px;
     border-radius: 4px;
     border: none;
     background-color: #333;
     color: #fff;
     font-size: 16px;
-    box-sizing: border-box;
 }
 
 .login-container button {
-    width: 100%; /* Ocupar el 100% del ancho disponible */
-    padding: 16px 20px;
+    width: 100%;
+    padding: 16px;
     border-radius: 4px;
     border: none;
-    background-color: #fff;
-    color: #000;
+    background-color: #e50914;
+    color: #fff;
     font-size: 16px;
     font-weight: bold;
     margin-top: 24px;
     cursor: pointer;
     transition: background-color 0.3s;
-    box-sizing: border-box;
 }
 
 .login-container button:hover {
-    background-color: #f0f0f0;
+    background-color: #ff0f1f;
 }
 
 .error-message {
