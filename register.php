@@ -97,12 +97,25 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <script src="./js/register-validaciones.js" defer></script>
 </head>
 <body class="login-page">
-    <header>
-        <div class="logo">NETFLIX</div>
-        <nav class="navbar">
-            <a href="login.php">LOGIN</a>
-            <a href="register.php">REGISTER</a>
-        </nav>
+<header class="header1">
+        <div class="navbar">
+            <div class="logo">
+                <img src="./img/logo.webp" alt="logo">
+            </div>
+            <div class="search-container">
+                <input type="text" placeholder="Buscar películas o series..." aria-label="Buscar">
+            </div>
+            <nav>
+                <?php if (isset($_SESSION['user_id'])): ?>
+                    <a href="perfil.php" class="user-icon"><i class="fas fa-user"></i></a>
+                    <a href="logout.php" class="logout-icon"><i class="fas fa-sign-out-alt"></i></a>
+
+                <?php else: ?>
+                    <a href="login.php">Iniciar Sesión</a>
+                    <a href="register.php">Registrarse</a>
+                <?php endif; ?>
+            </nav>
+        </div>
     </header>
     <div class="login-container">
         <h1>SIGN UP</h1>
