@@ -46,9 +46,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Iniciar Sesión - MyNetflix</title>
     <link rel="stylesheet" href="./css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
 </head>
-<body class="login-page">
-<header class="header1">
+<body class="login-page" style="font-family: 'Bebas Neue', sans-serif;">
+    <header class="header1">
         <div class="navbar">
             <div class="logo">
                 <img src="./img/logo.webp" alt="logo">
@@ -60,15 +61,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <?php if (isset($_SESSION['user_id'])): ?>
                     <a href="perfil.php" class="user-icon"><i class="fas fa-user"></i></a>
                     <a href="logout.php" class="logout-icon"><i class="fas fa-sign-out-alt"></i></a>
-
                 <?php else: ?>
                     <a href="login.php">Iniciar Sesión</a>
                     <a href="register.php">Registrarse</a>
                 <?php endif; ?>
             </nav>
         </div>
-    </header>
-        <div class="login-container">
+    </header>        
+    <div class="login-container">
         <h1>LOG IN TO NETFLIX</h1>
 
         <?php if ($error): ?>
@@ -84,9 +84,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <input type="password" id="password" name="password" placeholder="Password" required>
             </div>
             
-            <button type="submit">Log in</button>
+            <button type="submit" class="login-button">Log in</button>
         </form>
-        <p>You don't have account? <a href="register.php">Register</a></p>
+        <p>Don't have an account? <a href="register.php" style="color: #fff;">Sign up</a></p>
     </div>
 </body>
 </html>

@@ -7,53 +7,56 @@ body {
 }
 
 header {
-<<<<<<< HEAD
     background-color: #000; /* Encabezado negro */
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5); /* Sombra para el encabezado */
-=======
-    background-color: #000;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
-    width: 100%;
-    position: relative;
->>>>>>> 39b821f9afa33baa305a95e0b277aa99cf6641bb
 }
 
 .navbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 15px 40px;
-    position: relative; /* Añadido para posicionamiento del buscador */
+    padding: 0 40px;
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
 }
 
 .logo {
-    z-index: 1; /* Asegurar que esté por encima del buscador */
+    margin: 0;
+    padding: 0;
+    position: static; /* Mantener en flujo normal */
+    margin-right: auto; /* Empujar el logo a la izquierda */
+}
+
+.logo img {
+    height: 50px; /* Aumentar el tamaño del logo */
 }
 
 .logo h1 {
     margin: 0;
     font-size: 28px;
     font-weight: bold;
-    margin-left: 20px; /* Margen izquierdo para el logo */
+    margin-left: 0px; /* Margen izquierdo para el logo */
 }
 
 .search-container {
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
-    width: 500px; /* Aumentado de 300px a 500px */
-    margin: 0;
+    width: 300px;
+    margin: 0 auto;
 }
 
 .search-container input {
     width: 100%;
-    padding: 12px 20px; /* Aumentado el padding lateral para dar más espacio */
+    padding: 12px 20px;
     border: none;
     border-radius: 5px;
     background-color: #ffffff;
     color: #000;
-    text-align: left; /* Cambiado de center a left */
+    text-align: left;
     font-size: 16px;
+    box-sizing: border-box; /* Incluir padding en el ancho total */
 }
 
 .search-container input::placeholder {
@@ -67,7 +70,7 @@ header {
 }
 
 nav {
-    z-index: 1; /* Asegurar que esté por encima del buscador */
+    margin-left: auto; /* Empujar los botones a la derecha */
 }
 
 nav a {
@@ -409,21 +412,13 @@ footer {
 }
 
 .login-container {
-<<<<<<< HEAD
-    background: rgba(0, 0, 0, 0.75);
-    padding: 60px 68px 40px;
+    background: transparent;
+    padding: 60px 40px;
     border-radius: 4px;
     width: 100%;
     max-width: 450px;
-=======
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start; /* Changed from center to flex-start */
-    align-items: center;
-    padding: 0px;
-    margin-top: 0px; /* Added to control spacing */
->>>>>>> 39b821f9afa33baa305a95e0b277aa99cf6641bb
+    text-align: center;
+    box-sizing: border-box;
 }
 
 .login-container h1 {
@@ -434,6 +429,7 @@ footer {
 
 .form-group {
     margin-bottom: 16px;
+    width: 100%;
 }
 
 .form-group label {
@@ -450,24 +446,29 @@ footer {
     background-color: #333;
     color: #fff;
     font-size: 16px;
+    box-sizing: border-box;
 }
 
-.login-container button {
+.login-container button,
+.login-button {
     width: 100%;
     padding: 16px;
     border-radius: 4px;
     border: none;
-    background-color: #e50914;
-    color: #fff;
+    background-color: #fff;
+    color: #000;
     font-size: 16px;
     font-weight: bold;
-    margin-top: 24px;
+    margin: 24px 0;
     cursor: pointer;
     transition: background-color 0.3s;
+    box-sizing: border-box;
 }
 
-.login-container button:hover {
-    background-color: #ff0f1f;
+.login-container button:hover,
+.login-button:hover {
+    background-color: #e50914;
+    color: #fff;
 }
 
 .error-message {
@@ -698,4 +699,13 @@ footer {
 
 .contenido-info .play-button:hover {
     background: #ff0f1f;
+}
+
+.header1 {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    padding: 10px 0;
 }

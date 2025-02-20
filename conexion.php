@@ -3,7 +3,7 @@
 $host = 'localhost';
 $dbname = 'MyNetflix';
 $username = 'root';
-$password = ''; 
+$password = 'qweQWE123'; 
 
 try {
     // Crear una nueva conexión PDO

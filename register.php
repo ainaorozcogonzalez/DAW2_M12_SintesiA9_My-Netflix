@@ -95,6 +95,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <title>Registro - MyNetflix</title>
     <link rel="stylesheet" href="./css/styles.css">
     <script src="./js/register-validaciones.js" defer></script>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+
 </head>
 <body class="login-page">
 <header class="header1">
@@ -118,7 +120,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         </div>
     </header>
     <div class="login-container">
-        <h1>SIGN UP</h1>
+        <h1>SIGN UP FOR NETFLIX</h1>
         
         <div id="errores" class="error-container" style="display: none;"></div>
         
@@ -132,7 +134,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         <form id="registerForm" method="POST" action="register.php">
             <div class="form-group">
-                <input type="text" id="nombre" name="nombre" required placeholder="Name"
+                <input type="text" id="nombre" name="nombre" required placeholder="Full Name"
                        value="<?php echo isset($_POST['nombre']) ? htmlspecialchars($_POST['nombre']) : ''; ?>">
             </div>
             
@@ -144,17 +146,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <div class="form-group">
                 <input type="password" id="password" name="password" required placeholder="Password">
                 <small class="password-requirements">
-                    La contraseña debe tener al menos 6 caracteres, una mayúscula y un número
+                    Must be at least 6 characters, contain one uppercase letter and one number
                 </small>
             </div>
             
             <div class="form-group">
-                <input type="password" id="confirm_password" name="confirm_password" required placeholder="Confirm password">
+                <input type="password" id="confirm_password" name="confirm_password" required placeholder="Confirm Password">
             </div>
             
-            <button type="submit">Registrarse</button>
+            <button type="submit" class="login-button">Sign up</button>
         </form>
-        <p>¿Ya tienes cuenta? <a href="login.php">Inicia Sesión</a></p>
+        <p>Already have an account? <a href="login.php">Log in</a></p>
     </div>
 </body>
 </html> 
