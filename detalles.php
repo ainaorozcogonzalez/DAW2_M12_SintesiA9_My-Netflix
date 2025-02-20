@@ -56,8 +56,17 @@ if (!$contenido) {
                     <span class="tipo-badge"><?php echo ucfirst($contenido['tipo']); ?></span>
                     <span class="fecha"><?php echo date('Y', strtotime($contenido['fecha_lanzamiento'])); ?></span>
                     <span class="likes"><i class="fas fa-heart"></i> <?php echo $contenido['likes']; ?></span>
+                    <span class="duracion"><i class="fas fa-clock"></i> 120 min</span>
                 </div>
                 <p class="descripcion"><?php echo $contenido['descripcion']; ?></p>
+                
+                <?php if (!empty($contenido['director'])): ?>
+                    <p class="director"><strong>Director:</strong> <?php echo $contenido['director']; ?></p>
+                <?php endif; ?>
+                
+                <?php if (!empty($contenido['reparto'])): ?>
+                    <p class="reparto"><strong>Reparto:</strong> <?php echo $contenido['reparto']; ?></p>
+                <?php endif; ?>
             </div>
         </div>
     </div>

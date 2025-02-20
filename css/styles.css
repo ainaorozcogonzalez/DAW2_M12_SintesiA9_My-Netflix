@@ -494,7 +494,7 @@ footer {
 
 .detalles-container {
     max-width: 1200px;
-    margin: 80px auto 0;
+    margin: 80px auto;
     padding: 20px;
 }
 
@@ -526,6 +526,32 @@ footer {
     font-size: 3rem;
     margin: 0 0 20px 0;
     color: #fff;
+}
+
+.metadata {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+    color: #aaa;
+}
+
+.metadata span {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.descripcion {
+    color: #fff;
+    line-height: 1.6;
+    font-size: 1.1rem;
+    margin-bottom: 20px;
+}
+
+.director, .reparto {
+    color: #fff;
+    margin: 10px 0;
+    font-size: 1rem;
 }
 
 .play-button-large {

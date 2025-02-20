@@ -93,7 +93,9 @@ $all_contenidos = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <div class="contenidos-container">
                 <?php foreach ($all_contenidos as $contenido): ?>
                     <div class="contenido">
-                        <img src="./img/<?php echo $contenido['imagen']; ?>" alt="<?php echo $contenido['titulo']; ?>">
+                        <a href="detalles.php?id=<?php echo $contenido['id']; ?>" class="imagen-link">
+                            <img src="./img/<?php echo $contenido['imagen']; ?>" alt="<?php echo $contenido['titulo']; ?>">
+                        </a>
                         <h3><?php echo $contenido['titulo']; ?></h3>
                         <p><?php echo $contenido['descripcion']; ?></p>
                     </div>
