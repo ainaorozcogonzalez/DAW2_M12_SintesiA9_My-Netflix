@@ -7,10 +7,15 @@ body {
 }
 
 header {
+<<<<<<< HEAD
+    background-color: #000; /* Encabezado negro */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5); /* Sombra para el encabezado */
+=======
     background-color: #000;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
     width: 100%;
     position: relative;
+>>>>>>> 39b821f9afa33baa305a95e0b277aa99cf6641bb
 }
 
 .navbar {
@@ -397,16 +402,20 @@ footer {
 
 .login-page {
     background-color: #141414;
-    height: 100vh;
+    min-height: 100vh;
     display: flex;
-    flex-direction: column;
     justify-content: center;
     align-items: center;
-    overflow: hidden; /* Evita el scroll */
-    margin-top: 0; /* Eliminamos el margen superior anterior */
 }
 
 .login-container {
+<<<<<<< HEAD
+    background: rgba(0, 0, 0, 0.75);
+    padding: 60px 68px 40px;
+    border-radius: 4px;
+    width: 100%;
+    max-width: 450px;
+=======
     flex: 1;
     display: flex;
     flex-direction: column;
@@ -414,18 +423,17 @@ footer {
     align-items: center;
     padding: 0px;
     margin-top: 0px; /* Added to control spacing */
+>>>>>>> 39b821f9afa33baa305a95e0b277aa99cf6641bb
 }
 
 .login-container h1 {
     color: #fff;
     font-size: 32px;
     margin-bottom: 28px;
-    text-align: center;
 }
 
 .form-group {
     margin-bottom: 16px;
-    width: 100%;
 }
 
 .form-group label {
@@ -435,33 +443,31 @@ footer {
 }
 
 .form-group input {
-    width: 100%; /* Ocupar el 100% del ancho disponible */
+    width: 100%;
     padding: 16px 20px;
     border-radius: 4px;
     border: none;
     background-color: #333;
     color: #fff;
     font-size: 16px;
-    box-sizing: border-box;
 }
 
 .login-container button {
-    width: 100%; /* Ocupar el 100% del ancho disponible */
-    padding: 16px 20px;
+    width: 100%;
+    padding: 16px;
     border-radius: 4px;
     border: none;
-    background-color: #fff;
-    color: #000;
+    background-color: #e50914;
+    color: #fff;
     font-size: 16px;
     font-weight: bold;
     margin-top: 24px;
     cursor: pointer;
     transition: background-color 0.3s;
-    box-sizing: border-box;
 }
 
 .login-container button:hover {
-    background-color: #f0f0f0;
+    background-color: #ff0f1f;
 }
 
 .error-message {
