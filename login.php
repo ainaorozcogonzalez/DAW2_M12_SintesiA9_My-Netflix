@@ -20,13 +20,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         try {
             $stmt = $conn->prepare("SELECT id, contraseña, rol_id FROM usuarios WHERE email = ?");
             $stmt->execute([$email]);
-            $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
+            $user = $stmt->fetch();
 
-            if ($usuario && password_verify($password, $usuario['contraseña'])) {
-                $_SESSION['user_id'] = $usuario['id'];
-                $_SESSION['user_role'] = $usuario['rol_id'];
-                $_SESSION['user_email'] = $email;
-                header('Location: ' . ($usuario['rol_id'] == 2 ? 'admin_page.php' : 'index.php'));
+            if ($user && password_verify($password, $user['contraseña'])) {
+                $_SESSION['user_id'] = $user['id'];
+                $_SESSION['user_role'] = $user['rol_id'];
+
+                // Redirigir según el rol
+                if ($user['rol_id'] == 2) { // Rol de administrador
+                    header('Location: admin_page.php');
+                } else { // Rol de usuario normal
+                    header('Location: index.php');
+                }
                 exit;
             } else {
                 $error = "Credenciales incorrectas.";
