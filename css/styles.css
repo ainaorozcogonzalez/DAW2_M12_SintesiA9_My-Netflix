@@ -598,11 +598,12 @@ footer {
 }
 
 .success-message {
-    background-color: #28a745;
-    color: white;
-    padding: 10px;
+    color: #4CAF50;
+    background-color: #e8f5e9;
+    padding: 15px;
+    margin-bottom: 20px;
     border-radius: 4px;
-    margin-bottom: 16px;
+    border: 1px solid #c8e6c9;
 }
 
 .error-item {
@@ -734,4 +735,49 @@ footer {
     right: 0;
     z-index: 1000;
     padding: 10px 0;
+}
+
+.admin-page {
+    background-color: #141414;
+    min-height: 100vh;
+}
+
+.admin-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 20px;
+}
+
+.admin-options {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    margin-top: 40px;
+}
+
+.admin-option {
+    background-color: #222;
+    padding: 30px;
+    border-radius: 8px;
+    text-align: center;
+    color: #fff;
+    text-decoration: none;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.admin-option:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+.admin-option i {
+    font-size: 48px;
+    margin-bottom: 15px;
+    color: #e50914;
+}
+
+.admin-option span {
+    font-size: 20px;
+    display: block;
+    margin-top: 10px;
 }

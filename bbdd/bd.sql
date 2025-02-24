@@ -100,7 +100,7 @@ CREATE TABLE IF NOT EXISTS `usuarios` (
   `email` varchar(100) NOT NULL,
   `contraseña` varchar(255) NOT NULL,
   `rol_id` int DEFAULT NULL,
-  `activo` tinyint(1) DEFAULT '1',
+  `activo` tinyint(1) DEFAULT '0',
   `fecha_registro` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `email` (`email`),

@@ -18,21 +18,25 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $error = "Por favor, complete todos los campos.";
     } else {
         try {
-            $stmt = $conn->prepare("SELECT id, contraseña, rol_id FROM usuarios WHERE email = ?");
+            $stmt = $conn->prepare("SELECT id, contraseña, rol_id, activo FROM usuarios WHERE email = ?");
             $stmt->execute([$email]);
             $user = $stmt->fetch();
 
             if ($user && password_verify($password, $user['contraseña'])) {
-                $_SESSION['user_id'] = $user['id'];
-                $_SESSION['user_role'] = $user['rol_id'];
+                if ($user['activo'] == 0) {
+                    $error = "Tu cuenta está pendiente de activación. Por favor, contacta con el administrador.";
+                } else {
+                    $_SESSION['user_id'] = $user['id'];
+                    $_SESSION['user_role'] = $user['rol_id'];
 
-                // Redirigir según el rol
-                if ($user['rol_id'] == 2) { // Rol de administrador
-                    header('Location: admin_page.php');
-                } else { // Rol de usuario normal
-                    header('Location: index.php');
+                    // Redirigir según el rol
+                    if ($user['rol_id'] == 2) { // Rol de administrador
+                        header('Location: admin_page.php');
+                    } else { // Rol de usuario normal
+                        header('Location: index.php');
+                    }
+                    exit;
                 }
-                exit;
             } else {
                 $error = "Credenciales incorrectas.";
             }
@@ -72,9 +76,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <?php endif; ?>
             </nav>
         </div>
-    </header>        
+    </header>         
     <div class="login-container">
         <h1>LOG IN TO NETFLIX</h1>
+
+        <?php if (isset($_GET['success'])): ?>
+            <div class="success-message"><?php echo htmlspecialchars($_GET['success']); ?></div>
+        <?php endif; ?>
 
         <?php if ($error): ?>
             <div class="error-message"><?php echo htmlspecialchars($error); ?></div>

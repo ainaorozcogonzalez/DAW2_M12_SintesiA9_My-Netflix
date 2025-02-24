@@ -2,6 +2,19 @@
 session_start(); // Iniciar la sesión
 require 'conexion.php'; // Incluir la conexión a la base de datos
 
+// Verificar si el usuario está logueado y activo
+if (isset($_SESSION['user_id'])) {
+    $stmt = $conn->prepare("SELECT activo FROM usuarios WHERE id = ?");
+    $stmt->execute([$_SESSION['user_id']]);
+    $user = $stmt->fetch();
+    
+    if ($user['activo'] == 0) {
+        session_destroy();
+        header('Location: login.php?error=Tu cuenta está pendiente de activación');
+        exit;
+    }
+}
+
 // Obtener los 5 contenidos más populares
 $stmt = $conn->prepare("SELECT * FROM contenidos WHERE activo = 1 ORDER BY likes DESC LIMIT 5");
 $stmt->execute();

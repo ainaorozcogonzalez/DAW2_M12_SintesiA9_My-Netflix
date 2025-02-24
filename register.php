@@ -14,7 +14,7 @@ $success = '';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Limpieza y validación de datos
-    $nombre = filter_var(trim($_POST['nombre']), FILTER_SANITIZE_STRING);
+    $nombre = trim($_POST['nombre']);
     $email = filter_var(trim($_POST['email']), FILTER_SANITIZE_EMAIL);
     $password = $_POST['password'];
     $confirm_password = $_POST['confirm_password'];
@@ -63,23 +63,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         try {
             // Insertar nuevo usuario
             $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-            $rol_id = 2; // Rol por defecto (usuario normal)
+            $rol_id = 1; // Rol por defecto (usuario normal)
             
-            $stmt = $conn->prepare("INSERT INTO usuarios (nombre, email, contraseña, rol_id) VALUES (?, ?, ?, ?)");
-            if ($stmt->execute([$nombre, $email, $hashed_password, $rol_id])) {
-                $success = "Registro exitoso. Por favor, inicia sesión.";
-                
-                // Opcional: Iniciar sesión automáticamente
-                $_SESSION['user_id'] = $conn->lastInsertId();
-                $_SESSION['user_role'] = $rol_id;
-                $_SESSION['user_email'] = $email;
-                
-                // Redirigir después de 2 segundos
-                header("refresh:2;url=index.php");
-            }
+            $stmt = $conn->prepare("INSERT INTO usuarios (nombre, email, contraseña, rol_id, activo) VALUES (?, ?, ?, ?, ?)");
+            $stmt->execute([$nombre, $email, $hashed_password, $rol_id, 0]); // Rol 1 = usuario normal, activo = 0
+            
+            // Redirigir al login con mensaje de éxito
+            header('Location: login.php?success=Registro completado. Un administrador activará tu cuenta pronto.');
+            exit;
         } catch (PDOException $e) {
-            error_log("Error en registro: " . $e->getMessage());
-            $error = "Error al crear la cuenta. Por favor, intente más tarde.";
+            $error = "Error al registrar el usuario: " . $e->getMessage();
         }
     } else {
         $error = implode("<br>", $errors);
