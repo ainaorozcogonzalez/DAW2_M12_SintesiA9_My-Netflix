@@ -1,6 +1,8 @@
 document.addEventListener('DOMContentLoaded', function() {
     const filtros = document.querySelectorAll('.filtro-btn');
     const contenidos = document.querySelectorAll('.contenido');
+    const top5Section = document.getElementById('top5');
+    const contenidosSection = document.getElementById('contenidos');
 
     filtros.forEach(filtro => {
         filtro.addEventListener('click', function() {
@@ -11,9 +13,17 @@ document.addEventListener('DOMContentLoaded', function() {
             // Agregar la clase active al botón seleccionado
             this.classList.add('active');
 
+            // Mostrar u ocultar las secciones
+            if (tipo === 'movies' || tipo === 'series') {
+                top5Section.style.display = 'none';
+                contenidosSection.style.display = 'block';
+            } else {
+                top5Section.style.display = 'block';
+                contenidosSection.style.display = 'block';
+            }
+
             contenidos.forEach(contenido => {
                 const tipoContenido = contenido.dataset.tipo;
-                const likes = parseInt(contenido.dataset.likes);
 
                 switch(tipo) {
                     case 'all':
@@ -25,11 +35,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     case 'series':
                         contenido.style.display = tipoContenido === 'serie' ? 'block' : 'none';
                         break;
-                    case 'most-liked':
-                        contenido.style.display = likes >= 10 ? 'block' : 'none';
-                        break;
                 }
             });
         });
     });
-}); 
+});

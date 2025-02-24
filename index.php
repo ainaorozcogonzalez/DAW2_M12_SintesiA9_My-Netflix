@@ -66,7 +66,6 @@ $all_contenidos = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <button class="filtro-btn" data-filtro="all">ALL</button>
             <button class="filtro-btn" data-filtro="movies">MOVIES</button>
             <button class="filtro-btn" data-filtro="series">SERIES</button>
-            <button class="filtro-btn" data-filtro="most-liked">MOST LIKED</button>
         </nav>
     </div>
 
