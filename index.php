@@ -37,6 +37,7 @@ $all_contenidos = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"> <!-- Iconos -->
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
     <script src="./js/likes.js" defer></script>
+    <script src="./js/filtros.js" defer></script>
 </head>
 <body>
     <header class="header1">
@@ -60,6 +61,15 @@ $all_contenidos = $stmt->fetchAll(PDO::FETCH_ASSOC);
         </div>
     </header>
 
+    <div class="filtros-container">
+        <nav class="filtros-nav">
+            <button class="filtro-btn" data-filtro="all">ALL</button>
+            <button class="filtro-btn" data-filtro="movies">MOVIES</button>
+            <button class="filtro-btn" data-filtro="series">SERIES</button>
+            <button class="filtro-btn" data-filtro="most-liked">MOST LIKED</button>
+        </nav>
+    </div>
+
     <main>
         <section id="top5">
             <h2>Top 5 Contenidos</h2>
@@ -68,7 +78,7 @@ $all_contenidos = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 $ranking = 1;
                 foreach ($top5_contenidos as $contenido): 
                 ?>
-                    <div class="contenido">
+                    <div class="contenido" data-tipo="<?php echo $contenido['tipo']; ?>" data-likes="<?php echo $contenido['likes']; ?>">
                         <div class="imagen-container">
                             <div class="ranking-number">#<?php echo $ranking; ?></div>
                             <a href="detalles.php?id=<?php echo $contenido['id']; ?>" class="imagen-link">
@@ -105,7 +115,7 @@ $all_contenidos = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <h2>Contenidos Disponibles</h2>
             <div class="contenidos-container">
                 <?php foreach ($all_contenidos as $contenido): ?>
-                    <div class="contenido">
+                    <div class="contenido" data-tipo="<?php echo $contenido['tipo']; ?>" data-likes="<?php echo $contenido['likes']; ?>">
                         <a href="detalles.php?id=<?php echo $contenido['id']; ?>" class="imagen-link">
                             <img src="./img/<?php echo $contenido['imagen']; ?>" alt="<?php echo $contenido['titulo']; ?>">
                         </a>

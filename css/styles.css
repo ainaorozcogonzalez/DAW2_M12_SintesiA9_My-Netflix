@@ -781,3 +781,36 @@ footer {
     display: block;
     margin-top: 10px;
 }
+
+.filtros-container {
+    padding: 20px;
+    background-color: transparent;
+    margin-top: 70px;
+}
+
+.filtros-nav {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.filtro-btn {
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    padding: 10px 20px;
+    border-radius: 4px;
+    transition: color 0.3s;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 24px;
+}
+
+.filtro-btn:hover {
+    color: #e50914;
+}
+
+.filtro-btn.active {
+    color: #e50914;
+}
