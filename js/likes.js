@@ -23,10 +23,19 @@ document.addEventListener('DOMContentLoaded', function() {
                     return;
                 }
                 
+                const likesCount = this.querySelector('.likes-count');
                 if (data.action === 'liked') {
                     this.classList.add('liked');
-                } else {
+                    this.querySelector('i').style.color = '#e50914';
+                    if (likesCount) {
+                        likesCount.textContent = parseInt(likesCount.textContent) + 1;
+                    }
+                } else if (data.action === 'unliked') {
                     this.classList.remove('liked');
+                    this.querySelector('i').style.color = '#fff';
+                    if (likesCount) {
+                        likesCount.textContent = parseInt(likesCount.textContent) - 1;
+                    }
                 }
             })
             .catch(error => {

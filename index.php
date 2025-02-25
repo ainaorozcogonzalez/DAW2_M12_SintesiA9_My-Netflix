@@ -73,10 +73,17 @@ $all_contenidos = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <section id="top5">
             <h2>Top 5 Contenidos</h2>
             <div class="top5-container">
-                <?php 
-                $ranking = 1;
-                foreach ($top5_contenidos as $contenido): 
-                ?>
+            <?php 
+            $ranking = 1;
+            foreach ($top5_contenidos as $contenido): 
+                // Verificar si el usuario ha dado like a este contenido
+                $liked = false;
+                if (isset($_SESSION['user_id'])) {
+                    $stmt = $conn->prepare("SELECT id FROM likes WHERE usuario_id = ? AND contenido_id = ?");
+                    $stmt->execute([$_SESSION['user_id'], $contenido['id']]);
+                    $liked = $stmt->fetch() ? true : false;
+                }
+            ?>
                     <div class="contenido" data-tipo="<?php echo $contenido['tipo']; ?>" data-likes="<?php echo $contenido['likes']; ?>">
                         <div class="imagen-container">
                             <div class="ranking-number">#<?php echo $ranking; ?></div>
@@ -88,7 +95,7 @@ $all_contenidos = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                     <a href="reproducir.php?id=<?php echo $contenido['id']; ?>" class="play-button">
                                         <i class="fas fa-play"></i>
                                     </a>
-                                    <button class="like-button" data-id="<?php echo $contenido['id']; ?>">
+                                    <button class="like-button <?php echo $liked ? 'liked' : ''; ?>" data-id="<?php echo $contenido['id']; ?>">
                                         <i class="fas fa-heart"></i>
                                     </button>
                                 <?php else: ?>
@@ -115,19 +122,25 @@ $all_contenidos = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <div class="contenidos-container">
                 <?php foreach ($all_contenidos as $contenido): ?>
                     <div class="contenido" data-tipo="<?php echo $contenido['tipo']; ?>" data-likes="<?php echo $contenido['likes']; ?>">
-                        <a href="detalles.php?id=<?php echo $contenido['id']; ?>" class="imagen-link">
-                            <img src="./img/<?php echo $contenido['imagen']; ?>" alt="<?php echo $contenido['titulo']; ?>">
-                        </a>
-                        <h3><?php echo $contenido['titulo']; ?></h3>
-                        <p><?php echo $contenido['descripcion']; ?></p>
+                        <div class="card-container">
+                            <a href="detalles.php?id=<?php echo $contenido['id']; ?>" class="imagen-link">
+                                <img src="./img/<?php echo $contenido['imagen']; ?>" alt="<?php echo $contenido['titulo']; ?>">
+                                <div class="card-overlay">
+                                    <div class="card-info">
+                                        <h3><?php echo $contenido['titulo']; ?></h3>
+                                        <div class="card-meta">
+                                            <span class="card-year"><?php echo date('Y', strtotime($contenido['fecha_lanzamiento'])); ?></span>
+                                            <span class="card-type"><?php echo ucfirst($contenido['tipo']); ?></span>
+                                        </div>
+                                        <p class="card-description"><?php echo $contenido['descripcion']; ?></p>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
                     </div>
                 <?php endforeach; ?>
             </div>
         </section>
     </main>
-
-    <footer>
-        <!-- Derechos de autor eliminados -->
-    </footer>
 </body>
 </html>
