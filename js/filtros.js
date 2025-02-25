@@ -3,40 +3,65 @@ document.addEventListener('DOMContentLoaded', function() {
     const contenidos = document.querySelectorAll('.contenido');
     const top5Section = document.getElementById('top5');
     const contenidosSection = document.getElementById('contenidos');
+    const searchInput = document.querySelector('.search-input');
+    const searchButton = document.querySelector('.search-button');
 
-    filtros.forEach(filtro => {
-        filtro.addEventListener('click', function() {
-            const tipo = this.dataset.filtro;
+    function aplicarFiltros() {
+        const searchTerm = searchInput ? searchInput.value.toLowerCase().trim() : '';
+        const tipoFiltro = document.querySelector('.filtro-btn.active')?.dataset.filtro || 'all';
 
-            // Remover la clase active de todos los botones
-            filtros.forEach(f => f.classList.remove('active'));
-            // Agregar la clase active al botón seleccionado
-            this.classList.add('active');
+        // Ocultar Top 5 si hay un término de búsqueda o si se aplica un filtro específico
+        if (searchTerm || tipoFiltro !== 'all') {
+            top5Section.style.display = 'none';
+            contenidosSection.style.display = 'block';
+        } else {
+            top5Section.style.display = 'block';
+            contenidosSection.style.display = 'block';
+        }
 
-            // Mostrar u ocultar las secciones
-            if (tipo === 'movies' || tipo === 'series') {
-                top5Section.style.display = 'none';
-                contenidosSection.style.display = 'block';
-            } else {
-                top5Section.style.display = 'block';
-                contenidosSection.style.display = 'block';
+        contenidos.forEach(contenido => {
+            const tipoContenido = contenido.dataset.tipo;
+            const likes = parseInt(contenido.dataset.likes);
+            const titulo = contenido.querySelector('.contenido-titulo')?.textContent.toLowerCase() || '';
+
+            // Aplicar filtro de tipo
+            let mostrarPorTipo = true;
+            switch(tipoFiltro) {
+                case 'movies':
+                    mostrarPorTipo = tipoContenido === 'pelicula';
+                    break;
+                case 'series':
+                    mostrarPorTipo = tipoContenido === 'serie';
+                    break;
+                case 'liked':
+                    mostrarPorTipo = likes > 0;
+                    break;
             }
 
-            contenidos.forEach(contenido => {
-                const tipoContenido = contenido.dataset.tipo;
+            // Aplicar filtro de búsqueda
+            const mostrarPorBusqueda = titulo.includes(searchTerm);
 
-                switch(tipo) {
-                    case 'all':
-                        contenido.style.display = 'block';
-                        break;
-                    case 'movies':
-                        contenido.style.display = tipoContenido === 'pelicula' ? 'block' : 'none';
-                        break;
-                    case 'series':
-                        contenido.style.display = tipoContenido === 'serie' ? 'block' : 'none';
-                        break;
-                }
-            });
+            // Mostrar u ocultar según ambos filtros
+            contenido.style.display = (mostrarPorTipo && mostrarPorBusqueda) ? 'block' : 'none';
+        });
+    }
+
+    // Eventos para los botones de filtro
+    filtros.forEach(filtro => {
+        filtro.addEventListener('click', function() {
+            filtros.forEach(f => f.classList.remove('active'));
+            this.classList.add('active');
+            aplicarFiltros();
         });
     });
+
+    // Evento para el input de búsqueda
+    if (searchInput) {
+        searchInput.addEventListener('input', aplicarFiltros);
+    }
+
+    // Evento para el botón de búsqueda
+    if (searchButton) {
+        searchButton.addEventListener('click', aplicarFiltros);
+    }
 });

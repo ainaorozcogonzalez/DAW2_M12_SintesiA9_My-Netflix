@@ -46,7 +46,8 @@ $all_contenidos = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <img src="./img/logo.webp" alt="logo">
             </div>
             <div class="search-container">
-                <input type="text" placeholder="Buscar películas o series..." aria-label="Buscar">
+                <input type="text" class="search-input" placeholder="Buscar películas o series..." aria-label="Buscar">
+                <button class="search-button"><i class="fas fa-search"></i></button>
             </div>
             <nav>
                 <?php if (isset($_SESSION['user_id'])): ?>
@@ -61,13 +62,16 @@ $all_contenidos = $stmt->fetchAll(PDO::FETCH_ASSOC);
         </div>
     </header>
 
-    <div class="filtros-container">
-        <nav class="filtros-nav">
-            <button class="filtro-btn" data-filtro="all">ALL</button>
-            <button class="filtro-btn" data-filtro="movies">MOVIES</button>
-            <button class="filtro-btn" data-filtro="series">SERIES</button>
-        </nav>
-    </div>
+    <?php if (isset($_SESSION['user_id'])): ?>
+        <div class="filtros-container">
+            <nav class="filtros-nav">
+                <button class="filtro-btn" data-filtro="all">ALL</button>
+                <button class="filtro-btn" data-filtro="movies">MOVIES</button>
+                <button class="filtro-btn" data-filtro="series">SERIES</button>
+                <button class="filtro-btn" data-filtro="liked">LIKED</button>
+            </nav>
+        </div>
+    <?php endif; ?>
 
     <main>
         <section id="top5">
@@ -108,7 +112,7 @@ $all_contenidos = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                 <?php endif; ?>
                             </div>
                         </div>
-                        <h3 class="top5-title"><?php echo $contenido['titulo']; ?></h3>
+                        <h3 class="contenido-titulo"><?php echo $contenido['titulo']; ?></h3>
                     </div>
                 <?php 
                 $ranking++;
@@ -127,7 +131,7 @@ $all_contenidos = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                 <img src="./img/<?php echo $contenido['imagen']; ?>" alt="<?php echo $contenido['titulo']; ?>">
                                 <div class="card-overlay">
                                     <div class="card-info">
-                                        <h3><?php echo $contenido['titulo']; ?></h3>
+                                        <h3 class="contenido-titulo"><?php echo $contenido['titulo']; ?></h3>
                                         <div class="card-meta">
                                             <span class="card-year"><?php echo date('Y', strtotime($contenido['fecha_lanzamiento'])); ?></span>
                                             <span class="card-type"><?php echo ucfirst($contenido['tipo']); ?></span>

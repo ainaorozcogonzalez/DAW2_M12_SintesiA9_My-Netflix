@@ -41,33 +41,29 @@ header {
 }
 
 .search-container {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 300px;
-    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
-.search-container input {
-    width: 100%;
-    padding: 12px 20px;
+.search-input {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 200px;
+}
+
+.search-button {
+    padding: 8px 12px;
+    background-color: #e50914;
+    color: white;
     border: none;
-    border-radius: 5px;
-    background-color: #ffffff;
-    color: #000;
-    text-align: left;
-    font-size: 16px;
-    box-sizing: border-box; /* Incluir padding en el ancho total */
+    border-radius: 4px;
+    cursor: pointer;
 }
 
-.search-container input::placeholder {
-    color: #666;
-    text-align: left; /* Asegurar que el placeholder también esté alineado a la izquierda */
-}
-
-.search-container input:focus {
-    outline: none;
-    box-shadow: 0 0 0 2px #e50914; /* Borde rojo al enfocar */
+.search-button:hover {
+    background-color: #b20710;
 }
 
 nav {
@@ -909,7 +905,8 @@ footer {
 }
 
 .filtro-btn.active {
-    color: #e50914;
+    background-color: #e50914;
+    color: white;
 }
 
 .card-container {
