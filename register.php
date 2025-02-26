@@ -124,24 +124,24 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         <form id="registerForm" method="POST" action="register.php">
             <div class="form-group">
-                <input type="text" id="nombre" name="nombre" required placeholder="Full Name"
+                <input type="text" id="nombre" name="nombre" placeholder="Full Name"
                        value="<?php echo isset($_POST['nombre']) ? htmlspecialchars($_POST['nombre']) : ''; ?>">
             </div>
             
             <div class="form-group">
-                <input type="email" id="email" name="email" required placeholder="Email"
+                <input type="email" id="email" name="email" placeholder="Email"
                        value="<?php echo isset($_POST['email']) ? htmlspecialchars($_POST['email']) : ''; ?>">
             </div>
             
             <div class="form-group">
-                <input type="password" id="password" name="password" required placeholder="Password">
+                <input type="password" id="password" name="password" placeholder="Password">
                 <small class="password-requirements">
                     Must be at least 6 characters, contain one uppercase letter and one number
                 </small>
             </div>
             
             <div class="form-group">
-                <input type="password" id="confirm_password" name="confirm_password" required placeholder="Confirm Password">
+                <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirm Password">
             </div>
             
             <button type="submit" class="login-button">Sign up</button>

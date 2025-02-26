@@ -90,6 +90,29 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['crear_contenido'])) {
     }
 }
 
+// Procesar eliminación
+if (isset($_GET['delete_id'])) {
+    $delete_id = $_GET['delete_id'];
+    try {
+        $conn->beginTransaction();
+        
+        // Eliminar likes asociados
+        $stmt = $conn->prepare("DELETE FROM likes WHERE contenido_id = ?");
+        $stmt->execute([$delete_id]);
+        
+        // Eliminar el contenido
+        $stmt = $conn->prepare("DELETE FROM contenidos WHERE id = ?");
+        $stmt->execute([$delete_id]);
+        
+        $conn->commit();
+        header('Location: admin_gestion_peliculas.php?success=1');
+        exit;
+    } catch (PDOException $e) {
+        $conn->rollBack();
+        $error = "Error al eliminar el contenido: " . $e->getMessage();
+    }
+}
+
 // Obtener el catálogo de películas y series
 $query = "SELECT * FROM contenidos";
 if (isset($_GET['search']) && !empty($_GET['search'])) {
@@ -113,6 +136,7 @@ $contenidos = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <link rel="stylesheet" href="../css/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body class="admin-page">
     <header>
@@ -304,5 +328,6 @@ $contenidos = $stmt->fetchAll(PDO::FETCH_ASSOC);
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../js/gestion_peliculas.js"></script>
 </body>
 </html>
