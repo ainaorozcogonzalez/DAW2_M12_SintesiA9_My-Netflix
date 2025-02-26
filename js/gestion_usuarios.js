@@ -3,23 +3,16 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Función para mostrar mensajes
     function mostrarMensaje(mensaje, tipo) {
-        const alertClass = `alert-${tipo}`;
-        const alertHtml = `
-            <div class="alert ${alertClass} alert-dismissible fade show" role="alert">
-                ${mensaje}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        `;
-        const container = document.querySelector('.admin-container');
-        if (container) {
-            container.insertAdjacentHTML('afterbegin', alertHtml);
-            setTimeout(() => {
-                const alertElement = container.querySelector('.alert');
-                if (alertElement) {
-                    alertElement.remove();
-                }
-            }, 5000);
-        }
+        Swal.fire({
+            title: tipo.charAt(0).toUpperCase() + tipo.slice(1),
+            text: mensaje,
+            icon: tipo,
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true
+        });
     }
 
     // Función para actualizar la tabla con búsqueda
@@ -61,12 +54,22 @@ document.addEventListener('DOMContentLoaded', function () {
                         modal.hide();
                         formCrear.reset();
                         await actualizarTabla();
-                        mostrarMensaje('Usuario creado correctamente', 'success');
+                        await Swal.fire({
+                            title: '¡Éxito!',
+                            text: 'Usuario creado correctamente',
+                            icon: 'success',
+                            timer: 1500,
+                            showConfirmButton: false
+                        });
                     } else {
-                        mostrarMensaje(data.message || 'Error al crear el usuario', 'danger');
+                        throw new Error(data.message || 'Error al crear el usuario');
                     }
                 } catch (error) {
-                    mostrarMensaje(error.message, 'danger');
+                    Swal.fire({
+                        title: 'Error',
+                        text: error.message,
+                        icon: 'error'
+                    });
                 }
             });
         }
@@ -115,12 +118,22 @@ document.addEventListener('DOMContentLoaded', function () {
                         const modal = bootstrap.Modal.getInstance(document.getElementById('editarUsuarioModal'));
                         modal.hide();
                         await actualizarTabla();
-                        mostrarMensaje('Usuario actualizado correctamente', 'success');
+                        await Swal.fire({
+                            title: '¡Éxito!',
+                            text: 'Usuario actualizado correctamente',
+                            icon: 'success',
+                            timer: 1500,
+                            showConfirmButton: false
+                        });
                     } else {
-                        mostrarMensaje(data.message || 'Error al actualizar el usuario', 'danger');
+                        throw new Error(data.message || 'Error al actualizar el usuario');
                     }
                 } catch (error) {
-                    mostrarMensaje(error.message, 'danger');
+                    Swal.fire({
+                        title: 'Error',
+                        text: error.message,
+                        icon: 'error'
+                    });
                 }
             });
         }
@@ -129,9 +142,21 @@ document.addEventListener('DOMContentLoaded', function () {
     // Eliminar usuario
     function inicializarEliminar() {
         document.querySelectorAll('.btn-eliminar').forEach(btn => {
-            btn.addEventListener('click', async function (e) {
+            btn.addEventListener('click', async function(e) {
                 e.preventDefault();
-                if (confirm('¿Estás seguro de eliminar este usuario?')) {
+                
+                const result = await Swal.fire({
+                    title: '¿Estás seguro?',
+                    text: "Esta acción no se puede deshacer",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Sí, eliminar',
+                    cancelButtonText: 'Cancelar'
+                });
+
+                if (result.isConfirmed) {
                     const userId = this.dataset.id;
                     try {
                         const response = await fetch(`admin_gestion_usuarios.php?delete_id=${userId}`);
@@ -139,13 +164,23 @@ document.addEventListener('DOMContentLoaded', function () {
                         const data = await response.json();
                         
                         if (data.status === 'success') {
-                            mostrarMensaje('Usuario eliminado correctamente', 'success');
+                            await Swal.fire({
+                                title: '¡Eliminado!',
+                                text: 'El usuario ha sido eliminado correctamente.',
+                                icon: 'success',
+                                timer: 1500,
+                                showConfirmButton: false
+                            });
                             await actualizarTabla();
                         } else {
-                            mostrarMensaje(data.message || 'Error al eliminar el usuario', 'danger');
+                            throw new Error(data.message || 'Error al eliminar el usuario');
                         }
                     } catch (error) {
-                        mostrarMensaje('Error al eliminar el usuario: ' + error.message, 'danger');
+                        Swal.fire({
+                            title: 'Error',
+                            text: 'Error al eliminar el usuario: ' + error.message,
+                            icon: 'error'
+                        });
                     }
                 }
             });

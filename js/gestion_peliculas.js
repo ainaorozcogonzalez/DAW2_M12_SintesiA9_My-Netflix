@@ -1,28 +1,16 @@
 document.addEventListener('DOMContentLoaded', function() {
     // Función para mostrar mensajes
     function mostrarMensaje(mensaje, tipo) {
-        const alertClass = `alert-${tipo}`;
-        const alertHtml = `
-            <div class="alert ${alertClass} alert-dismissible fade show" role="alert">
-                ${mensaje}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        `;
-        const container = document.querySelector('.admin-container');
-        if (container) {
-            // Remover alertas existentes
-            const alertasExistentes = container.querySelectorAll('.alert');
-            alertasExistentes.forEach(alerta => alerta.remove());
-            
-            // Agregar nueva alerta
-            container.insertAdjacentHTML('afterbegin', alertHtml);
-            setTimeout(() => {
-                const alertElement = container.querySelector('.alert');
-                if (alertElement) {
-                    alertElement.remove();
-                }
-            }, 5000);
-        }
+        Swal.fire({
+            title: tipo.charAt(0).toUpperCase() + tipo.slice(1),
+            text: mensaje,
+            icon: tipo,
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true
+        });
     }
 
     // Función para actualizar la tabla con búsqueda
@@ -64,13 +52,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function inicializarCrear() {
         const formCrear = document.querySelector('.form-crear-contenido');
         if (formCrear) {
-            // Remover eventos existentes
-            formCrear.replaceWith(formCrear.cloneNode(true));
-            
-            // Obtener la nueva referencia al formulario
-            const newFormCrear = document.querySelector('.form-crear-contenido');
-            
-            newFormCrear.addEventListener('submit', async function(e) {
+            formCrear.addEventListener('submit', async function(e) {
                 e.preventDefault();
                 const formData = new FormData(this);
 
@@ -86,14 +68,24 @@ document.addEventListener('DOMContentLoaded', function() {
                     if (data.status === 'success') {
                         const modal = bootstrap.Modal.getInstance(document.getElementById('crearContenidoModal'));
                         modal.hide();
-                        this.reset();
+                        formCrear.reset();
                         await actualizarTabla();
-                        mostrarMensaje('Contenido creado correctamente', 'success');
+                        await Swal.fire({
+                            title: '¡Éxito!',
+                            text: 'Contenido creado correctamente',
+                            icon: 'success',
+                            timer: 1500,
+                            showConfirmButton: false
+                        });
                     } else {
-                        mostrarMensaje(data.message || 'Error al crear el contenido', 'danger');
+                        throw new Error(data.message || 'Error al crear el contenido');
                     }
                 } catch (error) {
-                    mostrarMensaje('Error al crear el contenido: ' + error.message, 'danger');
+                    Swal.fire({
+                        title: 'Error',
+                        text: error.message,
+                        icon: 'error'
+                    });
                 }
             });
         }
@@ -102,11 +94,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Editar contenido
     function inicializarEditar() {
         document.querySelectorAll('.form-editar-contenido').forEach(form => {
-            // Remover eventos existentes
-            const newForm = form.cloneNode(true);
-            form.replaceWith(newForm);
-            
-            newForm.addEventListener('submit', async function(e) {
+            form.addEventListener('submit', async function(e) {
                 e.preventDefault();
                 const formData = new FormData(this);
 
@@ -120,16 +108,25 @@ document.addEventListener('DOMContentLoaded', function() {
                     const data = await response.json();
 
                     if (data.status === 'success') {
-                        const modalId = this.closest('.modal').id;
-                        const modal = bootstrap.Modal.getInstance(document.getElementById(modalId));
+                        const modal = bootstrap.Modal.getInstance(this.closest('.modal'));
                         modal.hide();
                         await actualizarTabla();
-                        mostrarMensaje('Contenido actualizado correctamente', 'success');
+                        await Swal.fire({
+                            title: '¡Éxito!',
+                            text: 'Contenido actualizado correctamente',
+                            icon: 'success',
+                            timer: 1500,
+                            showConfirmButton: false
+                        });
                     } else {
-                        mostrarMensaje(data.message || 'Error al actualizar el contenido', 'danger');
+                        throw new Error(data.message || 'Error al actualizar el contenido');
                     }
                 } catch (error) {
-                    mostrarMensaje(error.message, 'danger');
+                    Swal.fire({
+                        title: 'Error',
+                        text: error.message,
+                        icon: 'error'
+                    });
                 }
             });
         });
@@ -138,13 +135,21 @@ document.addEventListener('DOMContentLoaded', function() {
     // Eliminar contenido
     function inicializarEliminar() {
         document.querySelectorAll('.btn-eliminar').forEach(btn => {
-            // Remover eventos existentes
-            const newBtn = btn.cloneNode(true);
-            btn.replaceWith(newBtn);
-            
-            newBtn.addEventListener('click', async function(e) {
+            btn.addEventListener('click', async function(e) {
                 e.preventDefault();
-                if(confirm('¿Estás seguro de eliminar este contenido?')) {
+                
+                const result = await Swal.fire({
+                    title: '¿Estás seguro?',
+                    text: "Esta acción no se puede deshacer",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Sí, eliminar',
+                    cancelButtonText: 'Cancelar'
+                });
+
+                if (result.isConfirmed) {
                     const contenidoId = this.dataset.id;
                     try {
                         const response = await fetch(`admin_gestion_peliculas.php?delete_id=${contenidoId}`);
@@ -152,13 +157,23 @@ document.addEventListener('DOMContentLoaded', function() {
                         const data = await response.json();
                         
                         if (data.status === 'success') {
-                            mostrarMensaje('Contenido eliminado correctamente', 'success');
+                            await Swal.fire({
+                                title: '¡Eliminado!',
+                                text: 'El contenido ha sido eliminado correctamente.',
+                                icon: 'success',
+                                timer: 1500,
+                                showConfirmButton: false
+                            });
                             await actualizarTabla();
                         } else {
-                            mostrarMensaje(data.message || 'Error al eliminar el contenido', 'danger');
+                            throw new Error(data.message || 'Error al eliminar el contenido');
                         }
                     } catch (error) {
-                        mostrarMensaje('Error al eliminar el contenido: ' + error.message, 'danger');
+                        Swal.fire({
+                            title: 'Error',
+                            text: 'Error al eliminar el contenido: ' + error.message,
+                            icon: 'error'
+                        });
                     }
                 }
             });
