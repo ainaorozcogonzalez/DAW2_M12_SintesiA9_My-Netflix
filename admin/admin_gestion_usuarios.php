@@ -39,15 +39,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['delete_id'])) {
 
 // Procesar edición
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['editar_usuario'])) {
-    $id = $_POST['id'];
-    $nombre = $_POST['nombre'];
-    $email = $_POST['email'];
-    $rol_id = $_POST['rol_id'];
-    $activo = isset($_POST['activo']) ? 1 : 0;
-
+    header('Content-Type: application/json');
     try {
+        $id = $_POST['id'];
+        $nombre = $_POST['nombre'];
+        $email = $_POST['email'];
+        $rol_id = $_POST['rol_id'];
+        $activo = isset($_POST['activo']) ? 1 : 0;
+
         $stmt = $conn->prepare("UPDATE usuarios SET nombre = ?, email = ?, rol_id = ?, activo = ? WHERE id = ?");
         $stmt->execute([$nombre, $email, $rol_id, $activo, $id]);
+        
         echo json_encode(['status' => 'success']);
         exit;
     } catch (PDOException $e) {
@@ -58,24 +60,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['editar_usuario'])) {
 
 // Procesar creación
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['crear_usuario'])) {
-    $nombre = $_POST['nombre'];
-    $email = $_POST['email'];
-    $rol_id = $_POST['rol_id'];
-    $activo = isset($_POST['activo']) ? 1 : 0;
-    $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
-
+    header('Content-Type: application/json');
     try {
-        // Verificar si el email ya existe
-        $stmt = $conn->prepare("SELECT id FROM usuarios WHERE email = ?");
-        $stmt->execute([$email]);
-        if ($stmt->fetch()) {
-            echo json_encode(['status' => 'error', 'message' => 'El email ya está registrado']);
-            exit;
-        }
+        $nombre = $_POST['nombre'];
+        $email = $_POST['email'];
+        $contraseña = password_hash($_POST['contraseña'], PASSWORD_DEFAULT);
+        $rol_id = $_POST['rol_id'];
+        $activo = isset($_POST['activo']) ? 1 : 0;
 
-        // Crear el usuario
         $stmt = $conn->prepare("INSERT INTO usuarios (nombre, email, contraseña, rol_id, activo) VALUES (?, ?, ?, ?, ?)");
-        $stmt->execute([$nombre, $email, $password, $rol_id, $activo]);
+        $stmt->execute([$nombre, $email, $contraseña, $rol_id, $activo]);
+        
         echo json_encode(['status' => 'success']);
         exit;
     } catch (PDOException $e) {
@@ -163,7 +158,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['obtener_usuario'])) {
                 <img src="../img/logo.webp" alt="logo">
             </div>
             <nav>
-                <a href="../logout.php" class="logout-icon"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a>
+                <a href="../admin_page.php" class="btn btn-secondary me-2">
+                    <i class="fas fa-arrow-left"></i> Volver
+                </a>
+                <a href="../logout.php" class="logout-icon">
+                    <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+                </a>
             </nav>
         </div>
     </header>
@@ -221,7 +221,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['obtener_usuario'])) {
         </div>
     </div>
 
-    <!-- Modal para crear usuario -->
+    <!-- Modal de Crear Usuario -->
     <div class="modal fade" id="crearUsuarioModal" tabindex="-1" aria-labelledby="crearUsuarioModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -241,19 +241,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['obtener_usuario'])) {
                             <input type="email" class="form-control" id="email" name="email" required>
                         </div>
                         <div class="mb-3">
-                            <label for="password" class="form-label">Contraseña</label>
-                            <input type="password" class="form-control" id="password" name="password" required>
+                            <label for="contraseña" class="form-label">Contraseña</label>
+                            <input type="password" class="form-control" id="contraseña" name="contraseña" required>
                         </div>
                         <div class="mb-3">
-                            <label for="rol_id" class="form-label">Rol</label>
-                            <select class="form-select" id="rol_id" name="rol_id" required>
+                            <label for="rol" class="form-label">Rol</label>
+                            <select class="form-select" id="rol" name="rol_id" required>
                                 <option value="1">Usuario</option>
                                 <option value="2">Administrador</option>
                             </select>
                         </div>
                         <div class="mb-3 form-check">
-                            <input type="checkbox" class="form-check-input" id="activo" name="activo" checked>
-                            <label class="form-check-label" for="activo">Habilitado</label>
+                            <input type="checkbox" class="form-check-input" id="activo" name="activo" value="1">
+                            <label class="form-check-label" for="activo">Usuario Activado</label>
                         </div>
                         <button type="submit" class="btn btn-primary">Crear Usuario</button>
                     </form>
@@ -262,7 +262,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['obtener_usuario'])) {
         </div>
     </div>
 
-    <!-- Mover el modal fuera del bucle -->
+    <!-- Modal de Editar Usuario -->
     <div class="modal fade" id="editarUsuarioModal" tabindex="-1" aria-labelledby="editarUsuarioModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -275,25 +275,25 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['obtener_usuario'])) {
                         <input type="hidden" name="editar_usuario" value="1">
                         <input type="hidden" name="id" id="editarUsuarioId">
                         <div class="mb-3">
-                            <label for="nombre" class="form-label">Nombre</label>
+                            <label for="editarNombre" class="form-label">Nombre</label>
                             <input type="text" class="form-control" id="editarNombre" name="nombre" required>
                         </div>
                         <div class="mb-3">
-                            <label for="email" class="form-label">Email</label>
+                            <label for="editarEmail" class="form-label">Email</label>
                             <input type="email" class="form-control" id="editarEmail" name="email" required>
                         </div>
                         <div class="mb-3">
-                            <label for="rol_id" class="form-label">Rol</label>
+                            <label for="editarRol" class="form-label">Rol</label>
                             <select class="form-select" id="editarRol" name="rol_id" required>
                                 <option value="1">Usuario</option>
                                 <option value="2">Administrador</option>
                             </select>
                         </div>
                         <div class="mb-3 form-check">
-                            <input type="checkbox" class="form-check-input" id="editarActivo" name="activo">
-                            <label class="form-check-label" for="activo">Habilitado</label>
+                            <input type="checkbox" class="form-check-input" id="editarActivo" name="activo" value="1">
+                            <label class="form-check-label" for="editarActivo">Usuario Activado</label>
                         </div>
-                        <button type="submit" class="btn btn-primary">Actualizar Usuario</button>
+                        <button type="submit" class="btn btn-primary">Guardar Cambios</button>
                     </form>
                 </div>
             </div>

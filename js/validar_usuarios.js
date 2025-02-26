@@ -25,9 +25,13 @@ document.addEventListener('DOMContentLoaded', function() {
         try {
             const response = await fetch('admin_validar_usuarios.php?obtener_tabla=1');
             if (!response.ok) throw new Error('Error al obtener los usuarios');
-            const data = await response.text();
-            document.querySelector('tbody').innerHTML = data;
-            inicializarEventos();
+            const data = await response.json();
+            if (data.status === 'success') {
+                document.querySelector('tbody').innerHTML = data.html;
+                inicializarEventos();
+            } else {
+                throw new Error(data.message || 'Error al actualizar la tabla');
+            }
         } catch (error) {
             mostrarMensaje('Error al actualizar la tabla: ' + error.message, 'danger');
         }

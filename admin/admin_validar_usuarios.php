@@ -8,38 +8,76 @@ if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] != 2) {
     exit;
 }
 
-// Obtener usuarios pendientes de validación
-$stmt = $conn->prepare("SELECT id, nombre, email, activo FROM usuarios WHERE activo = 0");
-$stmt->execute();
-$usuarios = $stmt->fetchAll(PDO::FETCH_ASSOC);
+// MANEJO DE SOLICITUDES AJAX
+if (isset($_GET['obtener_tabla']) || isset($_GET['id']) || isset($_GET['delete_id'])) {
+    header('Content-Type: application/json');
 
-// Procesar validación
-if (isset($_GET['id'])) {
-    $id = $_GET['id'];
-    try {
-        $stmt = $conn->prepare("UPDATE usuarios SET activo = 1 WHERE id = ?");
-        $stmt->execute([$id]);
-        header('Location: admin_validar_usuarios.php?success=1');
-        exit;
-    } catch (PDOException $e) {
-        $error = "Error al validar el usuario: " . $e->getMessage();
+    // Procesar validación vía AJAX
+    if (isset($_GET['id'])) {
+        try {
+            $stmt = $conn->prepare("UPDATE usuarios SET activo = 1 WHERE id = ?");
+            $stmt->execute([$_GET['id']]);
+            echo json_encode(['status' => 'success']);
+            exit;
+        } catch (PDOException $e) {
+            echo json_encode(['status' => 'error', 'message' => $e->getMessage()]);
+            exit;
+        }
+    }
+
+    // Procesar eliminación vía AJAX
+    if (isset($_GET['delete_id'])) {
+        try {
+            $stmt = $conn->prepare("DELETE FROM usuarios WHERE id = ?");
+            $stmt->execute([$_GET['delete_id']]);
+            echo json_encode(['status' => 'success']);
+            exit;
+        } catch (PDOException $e) {
+            echo json_encode(['status' => 'error', 'message' => $e->getMessage()]);
+            exit;
+        }
+    }
+
+    // Devolver tabla vía AJAX
+    if (isset($_GET['obtener_tabla'])) {
+        try {
+            $stmt = $conn->prepare("SELECT id, nombre, email, activo FROM usuarios WHERE activo = 0");
+            $stmt->execute();
+            $usuarios = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            
+            ob_start();
+            if (count($usuarios) > 0): ?>
+                <?php foreach ($usuarios as $usuario): ?>
+                    <tr>
+                        <td><?php echo htmlspecialchars($usuario['nombre']); ?></td>
+                        <td><?php echo htmlspecialchars($usuario['email']); ?></td>
+                        <td>
+                            <button class="btn btn-success btn-sm btn-validar" data-id="<?php echo $usuario['id']; ?>">
+                                <i class="fas fa-check"></i> Validar
+                            </button>
+                            <button class="btn btn-danger btn-sm btn-eliminar" data-id="<?php echo $usuario['id']; ?>">
+                                <i class="fas fa-trash"></i> Eliminar
+                            </button>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <tr>
+                    <td colspan="3" class="text-center">No hay usuarios pendientes de validación</td>
+                </tr>
+            <?php endif;
+            $html = ob_get_clean();
+            echo json_encode(['status' => 'success', 'html' => $html]);
+            exit;
+        } catch (PDOException $e) {
+            echo json_encode(['status' => 'error', 'message' => $e->getMessage()]);
+            exit;
+        }
     }
 }
 
-// Procesar eliminación
-if (isset($_GET['delete_id'])) {
-    $delete_id = $_GET['delete_id'];
-    try {
-        $stmt = $conn->prepare("DELETE FROM usuarios WHERE id = ?");
-        $stmt->execute([$delete_id]);
-        header('Location: admin_validar_usuarios.php?success=2');
-        exit;
-    } catch (PDOException $e) {
-        $error = "Error al eliminar el usuario: " . $e->getMessage();
-    }
-}
+// CARGA INICIAL DE LA PÁGINA
 ?>
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -49,8 +87,6 @@ if (isset($_GET['delete_id'])) {
     <link rel="stylesheet" href="../css/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
 </head>
 <body class="admin-page">
     <header>
@@ -59,7 +95,12 @@ if (isset($_GET['delete_id'])) {
                 <img src="../img/logo.webp" alt="logo">
             </div>
             <nav>
-                <a href="../logout.php" class="logout-icon"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a>
+                <a href="../admin_page.php" class="btn btn-secondary me-2">
+                    <i class="fas fa-arrow-left"></i> Volver
+                </a>
+                <a href="../logout.php" class="logout-icon">
+                    <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+                </a>
             </nav>
         </div>
     </header>
@@ -67,16 +108,6 @@ if (isset($_GET['delete_id'])) {
     <div class="admin-container">
         <h1 style="color: white;">Validar Usuarios</h1>
         
-        <?php if (isset($_GET['success'])): ?>
-            <div class="alert alert-success">
-                <?php echo ($_GET['success'] == 1) ? 'Usuario validado correctamente' : 'Usuario eliminado correctamente'; ?>
-            </div>
-        <?php endif; ?>
-        
-        <?php if (isset($error)): ?>
-            <div class="alert alert-danger"><?php echo htmlspecialchars($error); ?></div>
-        <?php endif; ?>
-
         <div class="table-responsive">
             <table class="table table-striped table-hover">
                 <thead class="table-dark">
@@ -87,26 +118,7 @@ if (isset($_GET['delete_id'])) {
                     </tr>
                 </thead>
                 <tbody>
-                    <?php if (count($usuarios) > 0): ?>
-                        <?php foreach ($usuarios as $usuario): ?>
-                            <tr>
-                                <td><?php echo htmlspecialchars($usuario['nombre']); ?></td>
-                                <td><?php echo htmlspecialchars($usuario['email']); ?></td>
-                                <td>
-                                    <a href="?id=<?php echo $usuario['id']; ?>" class="btn btn-success btn-sm">
-                                        <i class="fas fa-check"></i> Validar
-                                    </a>
-                                    <a href="?delete_id=<?php echo $usuario['id']; ?>" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de eliminar este usuario?');">
-                                        <i class="fas fa-trash"></i> Eliminar
-                                    </a>
-                                </td>
-                            </tr>
-                        <?php endforeach; ?>
-                    <?php else: ?>
-                        <tr>
-                            <td colspan="3" class="text-center">No hay usuarios pendientes de validación</td>
-                        </tr>
-                    <?php endif; ?>
+                    <!-- La tabla se cargará vía AJAX -->
                 </tbody>
             </table>
         </div>

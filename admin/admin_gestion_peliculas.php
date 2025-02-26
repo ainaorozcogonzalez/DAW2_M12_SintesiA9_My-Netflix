@@ -273,7 +273,12 @@ $contenidos = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <img src="../img/logo.webp" alt="logo">
             </div>
             <nav>
-                <a href="../logout.php" class="logout-icon"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a>
+                <a href="../admin_page.php" class="btn btn-secondary me-2">
+                    <i class="fas fa-arrow-left"></i> Volver
+                </a>
+                <a href="../logout.php" class="logout-icon">
+                    <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+                </a>
             </nav>
         </div>
     </header>
