@@ -97,9 +97,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <div class="logo">
                 <img src="./img/logo.webp" alt="logo">
             </div>
-            <div class="search-container">
-                <input type="text" placeholder="Buscar películas o series..." aria-label="Buscar">
-            </div>
             <nav>
                 <?php if (isset($_SESSION['user_id'])): ?>
                     <a href="perfil.php" class="user-icon"><i class="fas fa-user"></i></a>
