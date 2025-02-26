@@ -86,8 +86,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['crear_usuario'])) {
 
 // Devolver la tabla completa si se solicita mediante AJAX
 if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['obtener_tabla'])) {
-    $stmt = $conn->prepare("SELECT id, nombre, email, rol_id, activo FROM usuarios");
-    $stmt->execute();
+    $query = "SELECT id, nombre, email, rol_id, activo FROM usuarios";
+    $params = [];
+    
+    if (isset($_GET['search']) && !empty($_GET['search'])) {
+        $search = '%' . $_GET['search'] . '%';
+        $query .= " WHERE nombre LIKE :search OR email LIKE :search";
+        $params['search'] = $search;
+    }
+
+    $stmt = $conn->prepare($query);
+    $stmt->execute($params);
     $usuarios = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     foreach ($usuarios as $usuario): ?>
@@ -183,6 +192,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['obtener_usuario'])) {
         <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#crearUsuarioModal">
             <i class="fas fa-plus"></i> Crear Usuario
         </button>
+
+        <!-- Buscador rápido -->
+        <form class="mb-3 form-buscar">
+            <div class="input-group">
+                <input type="text" class="form-control" name="search" id="searchInput" placeholder="Buscar usuarios por nombre o email...">
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-search"></i> Buscar
+                </button>
+            </div>
+        </form>
 
         <div class="table-responsive">
             <table class="table table-striped table-hover">

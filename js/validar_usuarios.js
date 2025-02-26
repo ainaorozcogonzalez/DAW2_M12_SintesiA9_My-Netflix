@@ -1,37 +1,95 @@
-$(document).ready(function() {
-    // Validar usuario con AJAX
-    $('.btn-validar').click(function(e) {
-        e.preventDefault();
-        var userId = $(this).data('id');
-        $.ajax({
-            url: 'ajax/validar_usuario.php',
-            type: 'GET',
-            data: { id: userId },
-            success: function(response) {
-                location.reload();
-            },
-            error: function(xhr) {
-                alert('Error al validar el usuario');
-            }
-        });
-    });
+document.addEventListener('DOMContentLoaded', function() {
+    // Función para mostrar mensajes
+    function mostrarMensaje(mensaje, tipo) {
+        const alertClass = `alert-${tipo}`;
+        const alertHtml = `
+            <div class="alert ${alertClass} alert-dismissible fade show" role="alert">
+                ${mensaje}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        `;
+        const container = document.querySelector('.admin-container');
+        if (container) {
+            container.insertAdjacentHTML('afterbegin', alertHtml);
+            setTimeout(() => {
+                const alertElement = container.querySelector('.alert');
+                if (alertElement) {
+                    alertElement.remove();
+                }
+            }, 5000);
+        }
+    }
 
-    // Eliminar usuario con AJAX
-    $('.btn-eliminar').click(function(e) {
-        e.preventDefault();
-        if(confirm('¿Estás seguro de eliminar este usuario?')) {
-            var userId = $(this).data('id');
-            $.ajax({
-                url: 'ajax/eliminar_usuario.php',
-                type: 'GET',
-                data: { id: userId },
-                success: function(response) {
-                    location.reload();
-                },
-                error: function(xhr) {
-                    alert('Error al eliminar el usuario');
+    // Función para actualizar la tabla
+    async function actualizarTabla() {
+        try {
+            const response = await fetch('admin_validar_usuarios.php?obtener_tabla=1');
+            if (!response.ok) throw new Error('Error al obtener los usuarios');
+            const data = await response.text();
+            document.querySelector('tbody').innerHTML = data;
+            inicializarEventos();
+        } catch (error) {
+            mostrarMensaje('Error al actualizar la tabla: ' + error.message, 'danger');
+        }
+    }
+
+    // Validar usuario
+    function inicializarValidar() {
+        document.querySelectorAll('.btn-validar').forEach(btn => {
+            btn.addEventListener('click', async function(e) {
+                e.preventDefault();
+                const userId = this.dataset.id;
+                try {
+                    const response = await fetch(`admin_validar_usuarios.php?id=${userId}`);
+                    if (!response.ok) throw new Error('Error en la respuesta del servidor');
+                    const data = await response.json();
+                    
+                    if (data.status === 'success') {
+                        mostrarMensaje('Usuario validado correctamente', 'success');
+                        await actualizarTabla();
+                    } else {
+                        mostrarMensaje(data.message || 'Error al validar el usuario', 'danger');
+                    }
+                } catch (error) {
+                    mostrarMensaje('Error al validar el usuario: ' + error.message, 'danger');
                 }
             });
-        }
-    });
+        });
+    }
+
+    // Eliminar usuario
+    function inicializarEliminar() {
+        document.querySelectorAll('.btn-eliminar').forEach(btn => {
+            btn.addEventListener('click', async function(e) {
+                e.preventDefault();
+                if(confirm('¿Estás seguro de eliminar este usuario?')) {
+                    const userId = this.dataset.id;
+                    try {
+                        const response = await fetch(`admin_validar_usuarios.php?delete_id=${userId}`);
+                        if (!response.ok) throw new Error('Error en la respuesta del servidor');
+                        const data = await response.json();
+                        
+                        if (data.status === 'success') {
+                            mostrarMensaje('Usuario eliminado correctamente', 'success');
+                            await actualizarTabla();
+                        } else {
+                            mostrarMensaje(data.message || 'Error al eliminar el usuario', 'danger');
+                        }
+                    } catch (error) {
+                        mostrarMensaje('Error al eliminar el usuario: ' + error.message, 'danger');
+                    }
+                }
+            });
+        });
+    }
+
+    // Inicializar todos los eventos
+    function inicializarEventos() {
+        inicializarValidar();
+        inicializarEliminar();
+    }
+
+    // Inicializar eventos al cargar la página
+    inicializarEventos();
+    actualizarTabla();
 });
