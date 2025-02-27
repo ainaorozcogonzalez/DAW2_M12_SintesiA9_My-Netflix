@@ -21,7 +21,7 @@ $stmt->execute();
 $top5_contenidos = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 // Obtener todos los contenidos
-$stmt = $conn->prepare("SELECT * FROM contenidos WHERE activo = 1");
+$stmt = $conn->prepare("SELECT * FROM contenidos WHERE activo = 1 ORDER BY likes DESC");
 $stmt->execute();
 $all_contenidos = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
