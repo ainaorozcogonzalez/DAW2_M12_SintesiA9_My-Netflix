@@ -143,11 +143,5 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['toggle_like'])) {
         </div>
     </div>
 
-    <form method="GET" class="mb-3">
-        <div class="input-group">
-            <input type="text" class="form-control search-input" name="search" placeholder="Buscar películas o series..." value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>">
-            <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i> Buscar</button>
-        </div>
-    </form>
 </body>
 </html> 
