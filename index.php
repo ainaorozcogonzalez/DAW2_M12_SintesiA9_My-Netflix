@@ -21,7 +21,7 @@ $stmt->execute();
 $top5_contenidos = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 // Obtener todos los contenidos
-$stmt = $conn->prepare("SELECT * FROM contenidos WHERE activo = 1 ORDER BY likes DESC");
+$stmt = $conn->prepare("SELECT * FROM contenidos WHERE activo = 1");
 $stmt->execute();
 $all_contenidos = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -38,6 +38,7 @@ $all_contenidos = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
     <script src="./js/likes.js" defer></script>
     <script src="./js/filtros.js" defer></script>
+    <script src="./js/menu.js" defer></script>
 </head>
 <body>
     <header class="header1">
@@ -49,11 +50,15 @@ $all_contenidos = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <input type="text" class="search-input" placeholder="Buscar películas o series..." aria-label="Buscar">
                 <button class="search-button"><i class="fas fa-search"></i></button>
             </div>
+            <i class="fas fa-bars menu-toggle"></i>
             <nav>
+                <!-- <div class="mobile-search-container">
+                    <input type="text" class="search-input" placeholder="Buscar películas o series..." aria-label="Buscar">
+                    <button class="search-button"><i class="fas fa-search"></i></button>
+                </div> -->
                 <?php if (isset($_SESSION['user_id'])): ?>
                     <a href="perfil.php" class="user-icon"><i class="fas fa-user"></i></a>
                     <a href="logout.php" class="logout-icon"><i class="fas fa-sign-out-alt"></i></a>
-
                 <?php else: ?>
                     <a href="login.php">Iniciar Sesión</a>
                     <a href="register.php">Registrarse</a>
