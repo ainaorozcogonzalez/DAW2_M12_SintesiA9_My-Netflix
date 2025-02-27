@@ -24,6 +24,45 @@ if (isset($_SESSION['user_id'])) {
     $stmt->execute([$_SESSION['user_id'], $id]);
     $liked = $stmt->fetch() ? true : false;
 }
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['toggle_like'])) {
+    if (!isset($_SESSION['user_id'])) {
+        header('Content-Type: application/json');
+        echo json_encode(['error' => 'No autenticado']);
+        exit;
+    }
+
+    // Obtener el estado actual del like
+    $stmt = $conn->prepare("SELECT id FROM likes WHERE usuario_id = ? AND contenido_id = ?");
+    $stmt->execute([$_SESSION['user_id'], $id]);
+    $liked = $stmt->fetch() ? true : false;
+
+    if ($liked) {
+        // Quitar like
+        $stmt = $conn->prepare("DELETE FROM likes WHERE usuario_id = ? AND contenido_id = ?");
+        $stmt->execute([$_SESSION['user_id'], $id]);
+        $stmt = $conn->prepare("UPDATE contenidos SET likes = likes - 1 WHERE id = ?");
+    } else {
+        // Dar like
+        $stmt = $conn->prepare("INSERT INTO likes (usuario_id, contenido_id) VALUES (?, ?)");
+        $stmt->execute([$_SESSION['user_id'], $id]);
+        $stmt = $conn->prepare("UPDATE contenidos SET likes = likes + 1 WHERE id = ?");
+    }
+    $stmt->execute([$id]);
+    
+    // Obtener el nuevo número de likes
+    $stmt = $conn->prepare("SELECT likes FROM contenidos WHERE id = ?");
+    $stmt->execute([$id]);
+    $newLikes = $stmt->fetchColumn();
+    
+    // Devolver la respuesta en JSON
+    header('Content-Type: application/json');
+    echo json_encode([
+        'likes' => $newLikes,
+        'liked' => !$liked
+    ]);
+    exit;
+}
 ?>
 
 <!DOCTYPE html>

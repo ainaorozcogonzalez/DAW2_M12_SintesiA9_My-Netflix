@@ -27,6 +27,35 @@ if (!$contenido) {
 $stmt = $conn->prepare("SELECT id FROM likes WHERE usuario_id = ? AND contenido_id = ?");
 $stmt->execute([$_SESSION['user_id'], $id]);
 $liked = $stmt->fetch() ? true : false;
+
+// Manejar like/dislike
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['toggle_like'])) {
+    if ($liked) {
+        // Quitar like
+        $stmt = $conn->prepare("DELETE FROM likes WHERE usuario_id = ? AND contenido_id = ?");
+        $stmt->execute([$_SESSION['user_id'], $id]);
+        $stmt = $conn->prepare("UPDATE contenidos SET likes = likes - 1 WHERE id = ?");
+    } else {
+        // Dar like
+        $stmt = $conn->prepare("INSERT INTO likes (usuario_id, contenido_id) VALUES (?, ?)");
+        $stmt->execute([$_SESSION['user_id'], $id]);
+        $stmt = $conn->prepare("UPDATE contenidos SET likes = likes + 1 WHERE id = ?");
+    }
+    $stmt->execute([$id]);
+    
+    // Obtener el nuevo número de likes
+    $stmt = $conn->prepare("SELECT likes FROM contenidos WHERE id = ?");
+    $stmt->execute([$id]);
+    $newLikes = $stmt->fetchColumn();
+    
+    // Devolver la respuesta en JSON
+    header('Content-Type: application/json');
+    echo json_encode([
+        'likes' => $newLikes,
+        'liked' => !$liked
+    ]);
+    exit;
+}
 ?>
 
 <!DOCTYPE html>
@@ -48,12 +77,6 @@ $liked = $stmt->fetch() ? true : false;
             </a>
             <div class="nav-title"><?php echo $contenido['titulo']; ?></div>
         </div>
-        <div class="nav-right">
-            <button class="like-button <?php echo $liked ? 'liked' : ''; ?>" data-id="<?php echo $contenido['id']; ?>">
-                <i class="fas fa-heart"></i>
-                <span class="likes-count"><?php echo $contenido['likes']; ?></span>
-            </button>
-        </div>
     </nav>
 
     <div class="video-wrapper">
@@ -70,8 +93,12 @@ $liked = $stmt->fetch() ? true : false;
                 <div class="metadata">
                     <span class="tipo-badge"><?php echo ucfirst($contenido['tipo']); ?></span>
                     <span class="fecha"><i class="far fa-calendar-alt"></i> <?php echo date('Y', strtotime($contenido['fecha_lanzamiento'])); ?></span>
-                    <span class="likes"><i class="fas fa-heart"></i> <?php echo $contenido['likes']; ?> me gusta</span>
-                    <?php if (!empty($contenido['duracion'])): ?>
+                    <span class="likes-count">
+                        <button class="like-button <?php echo $liked ? 'liked' : ''; ?>" data-id="<?php echo $contenido['id']; ?>">
+                            <i class="fas fa-heart"></i>
+                            <?php echo $contenido['likes']; ?>
+                        </button>
+                    </span>                    <?php if (!empty($contenido['duracion'])): ?>
                         <span class="duracion"><i class="far fa-clock"></i> <?php echo $contenido['duracion']; ?> min</span>
                     <?php endif; ?>
                 </div>
