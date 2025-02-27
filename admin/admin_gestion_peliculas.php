@@ -119,6 +119,13 @@ if (isset($_GET['ajax']) || isset($_POST['ajax']) ||
             $params['search'] = $search;
         }
         
+        // Agregar ordenamiento
+        if (isset($_GET['sort']) && $_GET['sort'] == 'asc') {
+            $query .= " ORDER BY titulo ASC";
+        } elseif (isset($_GET['sort']) && $_GET['sort'] == 'desc') {
+            $query .= " ORDER BY titulo DESC";
+        }
+        
         $stmt = $conn->prepare($query);
         $stmt->execute($params);
         $contenidos = $stmt->fetchAll(PDO::FETCH_ASSOC);

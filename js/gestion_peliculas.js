@@ -13,13 +13,16 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Función para actualizar la tabla con búsqueda
-    async function actualizarTabla(searchTerm = '') {
+    // Función para actualizar la tabla con búsqueda y ordenamiento
+    async function actualizarTabla(searchTerm = '', sort = '') {
         try {
-            const url = searchTerm 
-                ? `admin_gestion_peliculas.php?obtener_tabla=1&search=${encodeURIComponent(searchTerm)}`
-                : 'admin_gestion_peliculas.php?obtener_tabla=1';
-                
+            const urlParams = new URLSearchParams();
+            urlParams.append('obtener_tabla', '1');
+            if (searchTerm) urlParams.append('search', searchTerm);
+            if (sort) urlParams.append('sort', sort);
+            
+            const url = `admin_gestion_peliculas.php?${urlParams.toString()}`;
+            
             const response = await fetch(url);
             if (!response.ok) throw new Error('Error al obtener el contenido');
             const data = await response.json();
@@ -202,12 +205,40 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
+    // Inicializar ordenamiento
+    function inicializarOrdenamiento() {
+        const thTitulo = document.querySelector('th:first-child');
+        if (thTitulo) {
+            thTitulo.addEventListener('click', function() {
+                const currentSort = thTitulo.dataset.sort || '';
+                let newSort = '';
+                
+                if (currentSort === '') {
+                    newSort = 'asc';
+                } else if (currentSort === 'asc') {
+                    newSort = 'desc';
+                }
+                
+                thTitulo.dataset.sort = newSort;
+                actualizarTabla(document.getElementById('searchInput').value, newSort);
+                
+                // Actualizar indicador visual
+                thTitulo.querySelector('.sort-indicator')?.remove();
+                const indicator = document.createElement('span');
+                indicator.className = 'sort-indicator ms-2';
+                indicator.innerHTML = newSort === 'asc' ? '▲' : '▼';
+                thTitulo.appendChild(indicator);
+            });
+        }
+    }
+
     // Inicializar todos los eventos
     function inicializarEventos() {
         inicializarCrear();
         inicializarEditar();
         inicializarEliminar();
         inicializarBusqueda();
+        inicializarOrdenamiento();
     }
 
     // Inicializar eventos al cargar la página
