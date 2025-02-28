@@ -1,6 +1,6 @@
 # 🎬 My-Netflix
 
-![My-Netflix Banner](https://via.placeholder.com/1200x400?text=My-Netflix)
+
 
 **My-Netflix** es una plataforma web inspirada en servicios de streaming como Netflix. Permite a los usuarios registrarse, explorar contenido multimedia, marcar favoritos y visualizar videos de manera sencilla e intuitiva.
 
